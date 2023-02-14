@@ -74,7 +74,7 @@ else:
             recipe_choice = int(recipe_choice) - 1
             break
 
-print(f"Yum! You chose: f{search_recipes[recipe_choice][0]}")
+print(f"Yum! You chose: {search_recipes[recipe_choice][0]}")
 print(f"Requesting recipe from {search_recipes[recipe_choice][1]}")
 # Now we have the recipe choice
 recipe_url = search_recipes[recipe_choice][1]
