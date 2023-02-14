@@ -44,11 +44,11 @@ if len(search_recipes) <= 5:
 else:
     option_number = 1
     limit = 5
+    LIMIT_INCREMENT = 5
     i = 0
-    recipe_choice_valid = False
     choices = set()
     # paginate the results 5 at a time
-    while not recipe_choice_valid:
+    while True:
         while i < len(search_recipes):
             if i < limit:
                 print(f"({option_number}) {search_recipes[i][0]}")
@@ -60,19 +60,19 @@ else:
                 choices.add(option_number)
                 page_num_choice = option_number
                 option_number += 1
-                limit += 5
                 i += 1
                 break
         recipe_choice = input("Which recipe would you like to cook?: ")
-        if not recipe_choice.isdigit():
-            print("Please enter a valid number: ")
-        elif int(recipe_choice) not in choices:
-            print("Please enter a valid number: ")
-        elif int(recipe_choice) == page_num_choice:
+        while not recipe_choice.isdigit():
+            recipe_choice = input("Please enter a valid number: ")
+        while int(recipe_choice) not in choices:
+            recipe_choice = input("Please enter a valid number: ")
+        if int(recipe_choice) == page_num_choice:
+            limit += LIMIT_INCREMENT
             continue
         else:
             recipe_choice = int(recipe_choice) - 1
-            recipe_choice_valid = True
+            break
 
 print(f"Yum! You chose: f{search_recipes[recipe_choice][0]}")
 print(f"Requesting recipe from {search_recipes[recipe_choice][1]}")
