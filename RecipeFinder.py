@@ -26,9 +26,10 @@ for a_tag in search_a_tags:
     title = title.replace("\n", " ") # relplace newlines with spaces
     title = title.replace(",", "") # remove commas
     title = re.sub(' +', ' ', title) # remove extra spaces
-    title = re.sub(r'\s[0-9]+\sRatings', '', title) # remove ratings
     title = title.replace("Save ", "") # remove "Save" from the beginning of the title
-    search_recipes.append((title, a_tag["href"])) # add the title and url to the list
+    if "Ratings" in title:
+        title = re.sub(r'\s[0-9]+\sRatings', '', title) # remove ratings
+        search_recipes.append((title, a_tag["href"])) # add the title and url to the list
 
 # Now we have a list of tuples with the recipe name and the url
 # index 0 is the first search result, index 1 is the second, etc.
