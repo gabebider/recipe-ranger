@@ -39,8 +39,10 @@ if len(search_recipes) <= 5:
         print(f"({option_number}) {option[0]}")
         option_number += 1
     recipe_choice = input("Which recipe would you like to cook?: ")
-    while recipe_choice not in ["1", "2", "3", "4", "5"]:
-        recipe_choice = input("Please select a recipe number from 1 to 5: ")
+    options = range(0, len(search_recipes))
+    options = [str(option) for option in options]
+    while recipe_choice not in options:
+        recipe_choice = input(f"Please select a recipe number from 1 to {int(options[-1]) + 1}: ")
     recipe_choice = int(recipe_choice) - 1
 else:
     option_number = 1
