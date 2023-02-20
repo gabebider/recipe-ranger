@@ -41,10 +41,10 @@ def RecipeFinder():
             print(f"({option_number}) {option[0]}")
             option_number += 1
         recipe_choice = input("Which recipe would you like to cook?: ")
-        options = range(0, len(search_recipes))
+        options = range(1, len(search_recipes) + 1)
         options = [str(option) for option in options]
         while recipe_choice not in options:
-            recipe_choice = input(f"Please select a recipe number from 1 to {int(options[-1]) + 1}: ")
+            recipe_choice = input(f"Please select a recipe number from 1 to {int(options[-1])}: ")
         recipe_choice = int(recipe_choice) - 1
     else:
         option_number = 1
