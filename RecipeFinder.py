@@ -5,6 +5,7 @@ import re
 
 def RecipeFinder():
 
+    print()
     if len(sys.argv) > 1:
         recipe_request = sys.argv[1]
         # recipe_request = input("What type of recipe would you like to cook?: ")
