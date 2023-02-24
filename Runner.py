@@ -1,11 +1,29 @@
 from recipe_scrapers import scrape_me
 from pprint import pprint
+from RecipeFinder import RecipeFinder
+import re
 
 class Runner():
     def __init__(self):
         # Get the recipe link
         # link = get_recipe_link()
-        link = 'https://www.allrecipes.com/recipe/20171/quick-and-easy-pizza-crust/'
+
+        # Chose recipe method
+        recipeMethod = input("Would you like to search for a recipe or provide your own link to one?").lower().strip()
+        regexSearch = r'\b(search|look( up)?|google|find|first|former)\b'
+        regexProvide = r'\b(link|provide|second|own|latter)\b'
+        methodSelection = False
+        while not methodSelection:
+            if re.search(regexSearch, recipeMethod):
+                link = RecipeFinder()
+                methodSelection = True
+            elif re.search(regexProvide, recipeMethod):
+                link = input("Please provide the link to the recipe: ").strip()
+                methodSelection = True
+            else:
+                recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one?").lower().strip()
+                
+        #link = 'https://www.allrecipes.com/recipe/20171/quick-and-easy-pizza-crust/'
 
         # Scrape the recipe page using recipe_scrapers
         scraper = scrape_me(link)
