@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import sys
 import re
 from RecipeFinder import RecipeFinder
+from Ingredient import Ingredient
 
 def UrlToRecipe(url):
     soup = BeautifulSoup(requests.get(url).text, "html.parser")
@@ -12,10 +13,18 @@ def UrlToRecipe(url):
     ingredients_list = ingredients_section.find_all('li')
     print()
     print("You will need the following ingredients:")
+
     for ingredient in ingredients_list:
-        print(ingredient.text.strip())
-    
-    print()
+        sections = ingredient.find_all("span")
+        newIngredient = Ingredient()
+        for section in sections:
+            if 'data-ingredient-quantity' in section.attrs:
+                newIngredient.setQuantity(section.text.strip())
+            elif 'data-ingredient-unit' in section.attrs:
+                newIngredient.setUnit(section.text.strip())
+            elif 'data-ingredient-name' in section.attrs:
+                newIngredient.setName(section.text.strip())
+        print(newIngredient.printBreakdown())
 
     step_num = 1
     for step in steps:

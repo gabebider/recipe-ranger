@@ -16,8 +16,10 @@ class Runner():
         # print(scraper.ingredients())
 
         # Split the steps from recipe_scrapers into smaller steps
-        steps = self.split_steps(scraper.instructions())
-        pprint(steps)
+        # steps = self.split_steps(scraper.instructions())
+        # pprint(steps)
+        ingredients = scraper.ingredients()
+        pprint(ingredients)
         # Display step 1 and ask user for input
 
         # Check if verb is information or navigation

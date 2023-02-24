@@ -107,7 +107,7 @@ def clean_request(request):
     return request.replace(" ", "+") # replace spaces with pluses for url
 
 def field_request():
-    return input("What field would you like to search?: ")
+    return input("What type of recipe would you like to cook?: ")
 
 def get_soup(url):
     response = requests.get(url)
