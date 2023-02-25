@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from Ingredient import Ingredient
 from recipe_scrapers import scrape_me
+import re
 
 class Recipe():
     def __init__(self, url, ingredients = {}, instructions = []):
@@ -34,6 +35,48 @@ class Recipe():
             self.addIngredient(newIngredient)
     
     def parseForIngredients(self):
+        scraper = scrape_me(self.url)
+        ingList = scraper.ingredients()
+
+        # Define regular expressions for amount and unit
+        amountRe = r'\d+\s+\d+/\d+|\d+/\d+|\d+'
+        unitRe = r'\b[a-zA-Z]+\b'
+
+        # Iterate over each entry in the array and extract information
+        for ingredient in ingList:
+        # Extract amount, unit, and ingredient using regular expressions
+            amount = re.search(amountRe, ingredient)
+            unit = re.search(unitRe, ingredient)
+            # If no amount is given, ingredient is just the item
+            if amount == None:
+                name = ingredient
+                amount = None
+                unit = None
+            # Checks if found unit is a valid unit
+            else:
+                unitRegex = r'(?i)\b(mm|millimeter[s]?|millimetre[s]?|cm|centimeter[s]?|centimetre[s]?|m|meter[s]?|metre[s]?|inch[es]?|in|yard[s]?|mg|milligram[s]?|milligramme[s]?|g|gram[s]?|gramme[s]?|kg|kilogram[s]?|kilogramme[s]?|pound[s]?|lb|ounce[s]?|oz|teaspoon[s]?|tsp?\.?|tablespoon[s]?|tbs?\.?|fluid\sounce[s]?|fl\soz|gill[s]?|cup[s]?|c|pint[s]?|pt|fl\spt|quart[s]?|qt|fl\sqt|gallon[s]?|gal|ml|milliliter[s]?|millilitre[s]?|cc|cubic\scentimeter[s]?|l|liter[s]?|litre[s]?|dl|deciliter[s]?|decilitre[s]?)\b'
+                if not re.search(unitRegex, unit.group()):
+                    unit = None
+                    amount = amount.group().strip()
+                    amountAndUnit = amount
+                else:
+                    amount = amount.group().strip()
+                    unit = unit.group().strip()
+                    amountAndUnit = amount + " " + unit
+                # Finds final ingredient by removing amount and unit
+                name = ingredient.replace(amountAndUnit, "").strip()
+                # Checks to make sure there is no "and", "plus" or other keywords like that
+                if re.search(r'^(and|plus|&|+)\b', name):
+                    name = name.replace("and", "")
+                    name = name.replace("plus", "")
+                    amount2 = re.search(amountRe, name)
+                    unit2 = re.search(unitRe, name)
+                    if not amount2.group() == None and not unit2.group() == None:
+                        amount = [amount, amount2.group()]
+                        unit = [unit, unit2.group()]
+                        name = name.replace(amount2.group() + " " + unit2.group(), "").strip()
+            # Adds ingredient to ingredients list
+            self.addIngredient(Ingredient(name, amount, unit))
         pass
     
     def printIngredients(self,printBreakdown=False):
@@ -53,8 +96,8 @@ class Recipe():
             print(f"Step {step_num}: {instruction}")
             step_num += 1
 
-    def printRecipe(self):
-        self.printIngredients()
+    def printRecipe(self, printBreakdown=False):
+        self.printIngredients(printBreakdown)
         print()
         self.printInstructions()
         print()
