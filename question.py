@@ -4,6 +4,10 @@ from Ingredient import Ingredient
 from bs4 import BeautifulSoup
 import requests
 
+# TODO: @Gabe - write code to handle questions such as "substitute", "what is X", "what can I use instead of X", etc.
+# these can be found in flow.md
+# for time being, just return a google search
+
 def tokenize(text: str) -> list:
 	""" 
 	Given a string, return a list of the lowercase tokens (words) in that string
