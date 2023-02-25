@@ -7,7 +7,7 @@ import re
 class Recipe():
     def __init__(self, url, ingredients = {}, instructions = []):
         self.url = url
-        self.ingredients = ingredients
+        self.ingredients: list[Ingredient] = ingredients
         self.instructions = instructions
     
     def addIngredient(self, ingredient):
@@ -80,9 +80,7 @@ class Recipe():
         pass
     
     def printIngredients(self,printBreakdown=False):
-        print()
-        print("You will need the following ingredients:")
-        print()
+        print("\nYou will need the following ingredients:\n")
         for ingredient in self.ingredients.values():
             if printBreakdown:
                 print(ingredient.getBreakdown())
@@ -96,8 +94,12 @@ class Recipe():
             print(f"Step {step_num}: {instruction}")
             step_num += 1
 
-    def printRecipe(self, printBreakdown=False):
-        self.printIngredients(printBreakdown)
+    def printInstruction(self, step: int) -> None:
+        # print the instruction at the given step
+        print(f"Step {step}: {self.instructions[step-1]}")
+
+    def printRecipe(self):
+        self.printIngredients()
         print()
         self.printInstructions()
         print()
