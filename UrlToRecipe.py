@@ -26,11 +26,11 @@ def UrlToRecipe(url):
                 newIngredient.setName(section.text.strip())
         print(newIngredient.printBreakdown())
 
-    step_num = 1
-    for step in steps:
-        # step.find("p")
-        print(f"Step {step_num}: {step.find('p').text.strip()}")
-        step_num += 1
+    # step_num = 1
+    # for step in steps:
+    #     # step.find("p")
+    #     print(f"Step {step_num}: {step.find('p').text.strip()}")
+    #     step_num += 1
 
 if __name__ == "__main__":
     url = RecipeFinder()

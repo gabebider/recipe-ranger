@@ -17,5 +17,5 @@ class Ingredient():
     def setUnit(self, unit):
         self.unit = unit
 
-    def printBreakdown(self):
+    def getBreakdown(self):
         return f"{self.quantity} {self.unit} {self.name}\n   Quantity: {self.quantity}\n    Unit: {self.unit}\n    Name: {self.name}"
