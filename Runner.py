@@ -106,4 +106,4 @@ class Runner():
             self.recipe.addInstruction(sent)
 
 if __name__ == '__main__':
-    Runner(link = 'https://www.allrecipes.com/recipe/20171/quick-and-easy-pizza-crust/')
+    Runner()

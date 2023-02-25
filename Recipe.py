@@ -66,7 +66,7 @@ class Recipe():
                 # Finds final ingredient by removing amount and unit
                 name = ingredient.replace(amountAndUnit, "").strip()
                 # Checks to make sure there is no "and", "plus" or other keywords like that
-                if re.search(r'^(and|plus|&|+)\b', name):
+                if re.search(r'^(and|plus|&)\b', name):
                     name = name.replace("and", "")
                     name = name.replace("plus", "")
                     amount2 = re.search(amountRe, name)
