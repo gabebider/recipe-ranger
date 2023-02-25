@@ -139,25 +139,13 @@ def scrape_youtube_for_question(question: str) -> str:
     url = f"https://www.youtube.com/results?search_query={question}"
 
     request = requests.get(url)
-    with open ("test.html", "w") as f:
-        f.write(str(request.text))
+    # with open ("test.html", "w") as f:
+    #     f.write(str(request.text))
 
     soup = BeautifulSoup(request.text, "html.parser")
 
-    # parking lot
-    # .find('div', {'id': 'contents'}).find('a')['href']
-
     # get the first video
     # link = soup.find('div', {'class': 'style-scope ytd-item-section-renderer'}).find('a', {'class': 'yt-simple-endpoint inline-block style-scope ytd-thumbnail'})
-    a_tags = soup.find_all('a')
-
-    for a in a_tags:
-        if a.get('href'):
-            return a.get('href')
-
-    # goods = []
-    # for li in link:
-    #     print(li.get('href'))
 
     # print(goods)
     return "scraping youtube lowkey hard"
