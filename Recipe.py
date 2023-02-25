@@ -98,8 +98,8 @@ class Recipe():
         # print the instruction at the given step
         print(f"Step {step}: {self.instructions[step-1]}")
 
-    def printRecipe(self):
-        self.printIngredients()
+    def printRecipe(self, printBreakdown=False):
+        self.printIngredients(printBreakdown)
         print()
         self.printInstructions()
         print()
