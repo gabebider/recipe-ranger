@@ -132,26 +132,13 @@ def scrape_youtube_for_question(question: str) -> str:
 
     # replace spaces with +'s
     question = question.replace(" ", "+")
-    # remove any punctuation
-    question = re.sub(r'[^\w\s]', '', question)
 
     # create the url
     url = f"https://www.youtube.com/results?search_query={question}"
 
-    request = requests.get(url)
-    # with open ("test.html", "w") as f:
-    #     f.write(str(request.text))
-
-    soup = BeautifulSoup(request.text, "html.parser")
-
-    # get the first video
-    # link = soup.find('div', {'class': 'style-scope ytd-item-section-renderer'}).find('a', {'class': 'yt-simple-endpoint inline-block style-scope ytd-thumbnail'})
-
-    # print(goods)
-    return "scraping youtube lowkey hard"
-    return link
+    return f"Great question! 😚 Here are some videos that might help: {url} 🥰"
 
 
 
 if __name__ == '__main__':
-    print(scrape_youtube_for_question("how do i chop an onion"))
+    pass
