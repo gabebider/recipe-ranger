@@ -11,7 +11,7 @@ class Ingredient():
         elif self.unit == None:
             return f"{self.quantity} {self.name}"
         elif isinstance(self.unit, list) and isinstance(self.quantity, list):
-            return f"{self.quantity[0]} {self.unit[0]} and {self.quantity[1]} {self.unit[1]} {self.name}"
+            return f"{self.quantity[0]} {self.unit[0]} and/of {self.quantity[1]} {self.unit[1]} {self.name}"
         else:
             return f"{self.quantity} {self.unit} {self.name}"
     

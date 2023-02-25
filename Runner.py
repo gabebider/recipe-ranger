@@ -29,7 +29,7 @@ class Runner():
 
         # initialize the recipe object, and get from URL or parse depending on website source
         self.recipe = Recipe(url=link)
-        if re.search(r'www.allrecipes.com', link):
+        if re.search(r'allrecipes.com', link):
             self.recipe.getIngredientsFromUrl()
         else:
             self.recipe.parseForIngredients()
@@ -37,9 +37,9 @@ class Runner():
         # Scrape the recipe page using recipe_scrapers
         scraper = scrape_me(link)
         self.splitAndAddInstructions(scraper)
-        
-        print("Here are the ingredients you will need:")
-        self.recipe.printIngredients()
+
+        # Print Ingredients
+        self.recipe.printIngredients(True)
         print()
         # 4. Option to see all steps or just the first step
         showAllSteps = input("Would you like to see all of the steps or just the first step?: ").lower().strip()

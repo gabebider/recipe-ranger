@@ -39,8 +39,8 @@ class Recipe():
         ingList = scraper.ingredients()
 
         # Define regular expressions for amount and unit
-        amountRe = r'\d+\s+\d+/\d+|\d+/\d+|\d+'
-        unitRe = r'\b[a-zA-Z]+\b'
+        amountRe = r'\d+(?:\.\d+)?-\d+(?:\.\d+)?|\d+(?:\.\d+)?/\d+|\d+(?:\.\d+)?\s+\d+/\d+|\d+(?:\.\d+)?\s+\d+(?:\.\d+)?(?!-)|\d+(?:\.\d+)?'
+        unitRe = r'\b(?<!-)[a-zA-Z]+\b'
 
         # Iterate over each entry in the array and extract information
         for ingredient in ingList:
@@ -54,7 +54,7 @@ class Recipe():
                 unit = None
             # Checks if found unit is a valid unit
             else:
-                unitRegex = r'(?i)\b(mm|millimeter[s]?|millimetre[s]?|cm|centimeter[s]?|centimetre[s]?|m|meter[s]?|metre[s]?|inch[es]?|in|yard[s]?|mg|milligram[s]?|milligramme[s]?|g|gram[s]?|gramme[s]?|kg|kilogram[s]?|kilogramme[s]?|pound[s]?|lb|ounce[s]?|oz|teaspoon[s]?|tsp?\.?|tablespoon[s]?|tbs?\.?|fluid\sounce[s]?|fl\soz|gill[s]?|cup[s]?|c|pint[s]?|pt|fl\spt|quart[s]?|qt|fl\sqt|gallon[s]?|gal|ml|milliliter[s]?|millilitre[s]?|cc|cubic\scentimeter[s]?|l|liter[s]?|litre[s]?|dl|deciliter[s]?|decilitre[s]?)\b'
+                unitRegex = r'(?i)\b(package[s]?|mm|millimeter[s]?|millimetre[s]?|cm|centimeter[s]?|centimetre[s]?|m|meter[s]?|metre[s]?|inch[es]?|in|yard[s]?|mg|milligram[s]?|milligramme[s]?|g|gram[s]?|gramme[s]?|kg|kilogram[s]?|kilogramme[s]?|pound[s]?|lb|ounce[s]?|oz|teaspoon[s]?|tsp|tablespoon[s]?|tbs|tbsp|fluid\sounce[s]?|fl\soz|gill[s]?|cup[s]?|c|pint[s]?|pt|fl\spt|quart[s]?|qt|fl\sqt|gallon[s]?|gal|ml|milliliter[s]?|millilitre[s]?|cc|cubic\scentimeter[s]?|l|liter[s]?|litre[s]?|dl|deciliter[s]?|decilitre[s]?)\b'
                 if not re.search(unitRegex, unit.group()):
                     unit = None
                     amount = amount.group().strip()
@@ -66,15 +66,22 @@ class Recipe():
                 # Finds final ingredient by removing amount and unit
                 name = ingredient.replace(amountAndUnit, "").strip()
                 # Checks to make sure there is no "and", "plus" or other keywords like that
-                if re.search(r'^(and|plus|&)\b', name):
-                    name = name.replace("and", "")
-                    name = name.replace("plus", "")
-                    amount2 = re.search(amountRe, name)
-                    unit2 = re.search(unitRe, name)
-                    if not amount2.group() == None and not unit2.group() == None:
-                        amount = [amount, amount2.group()]
-                        unit = [unit, unit2.group()]
-                        name = name.replace(amount2.group() + " " + unit2.group(), "").strip()
+                if re.search(r'^(and|plus|&)\b', name) or (name[0].isdigit()):
+                    count = 1
+                    while name[count].isdigit():
+                        count = count + 1
+                    if name[count] != "-":
+                        name = name.replace("and", "")
+                        name = name.replace("plus", "")
+                        amount2 = re.search(amountRe, name)
+                        unit2 = re.search(unitRe, name)
+                        if not amount2.group() == None and not unit2.group() == None:
+                            amount = [amount, amount2.group()]
+                            unit = [unit, unit2.group()]
+                            name = name.replace(amount2.group() + " " + unit2.group(), "").strip()
+                name = name.replace("  ", " ")
+                if name.startswith('.'):
+                    name = name[1:].strip()
             # Adds ingredient to ingredients list
             self.addIngredient(Ingredient(name, amount, unit))
         pass
@@ -98,8 +105,8 @@ class Recipe():
         # print the instruction at the given step
         print(f"Step {step}: {self.instructions[step-1]}")
 
-    def printRecipe(self, printBreakdown=False):
-        self.printIngredients(printBreakdown)
+    def printRecipe(self, printBreakdownIng=False):
+        self.printIngredients(printBreakdownIng)
         print()
         self.printInstructions()
         print()
