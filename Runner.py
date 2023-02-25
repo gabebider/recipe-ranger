@@ -8,11 +8,7 @@ from navigation import isNavigation, doNavigation
 
 class Runner():
     def __init__(self, link=None):
-        # Get the recipe link
-        # link = get_recipe_link()
-
         # 1. Get recipe either from url or from recipe search
-        
         if link == None:
             # Chose recipe method
             recipeMethod = input("Would you like to search for a recipe or provide your own link to one?: ").lower().strip()
@@ -30,7 +26,6 @@ class Runner():
                     recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one?").lower().strip()
         else:
             print(f"Using provided link: {link}")
-            #
 
         # initialize the recipe object, and get from URL or parse depending on website source
         self.recipe = Recipe(url=link)
