@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from Ingredient import Ingredient
+from recipe_scrapers import scrape_me
 
 class Recipe():
     def __init__(self, url, ingredients = {}, instructions = []):
@@ -31,6 +32,9 @@ class Recipe():
                     newIngredient.setName(section.text.strip())
 
             self.addIngredient(newIngredient)
+    
+    def parseForIngredients(self):
+        pass
     
     def printIngredients(self,printBreakdown=False):
         print()

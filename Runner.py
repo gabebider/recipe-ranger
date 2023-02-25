@@ -23,20 +23,22 @@ class Runner():
                 link = input("Please provide the link to the recipe: ").strip()
                 methodSelection = True
             else:
-                recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one?").lower().strip()
+                recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one? ").lower().strip()
                 
         #link = 'https://www.allrecipes.com/recipe/20171/quick-and-easy-pizza-crust/'
 
-        # initialize the recipe object
+        # initialize the recipe object, and get from URL or parse depending on website source
         self.recipe = Recipe(url=link)
-        self.recipe.getIngredientsFromUrl()
+        if re.search(r'www.allrecipes.com', link):
+            self.recipe.getIngredientsFromUrl()
+        else:
+            self.recipe.parseForIngredients()
+        
         # Scrape the recipe page using recipe_scrapers
         scraper = scrape_me(link)
         self.splitAndAddInstructions(scraper)
 
         self.recipe.printRecipe()
-
-
 
         # Display step 1 and ask user for input
 
