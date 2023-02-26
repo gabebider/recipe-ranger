@@ -5,6 +5,8 @@ import spacy
 from RecipeFinder import RecipeFinder
 import re
 from navigation import isNavigation, doNavigation
+from question import isQuestion
+from question import questionParser
 
 class Runner():
     def __init__(self, link=None):
@@ -67,7 +69,7 @@ class Runner():
         #     2. Get input
             response = input("What would you like to do next?: \n").lower().strip()
         #   If input is question
-            if self.isQuestion(response, self.recipe):
+            if isQuestion(response):
         #         - TODO - Make list of question words
         #         1. Determine if question is about ingredients
         #             1. What is X?
@@ -77,7 +79,7 @@ class Runner():
         #             1. What is the temperature?
         #             2. What is the time?
         #             3. How much of X?
-                pass
+                print(questionParser(response, self.recipe))
         #   If input is navigation
             elif isNavigation(response):
         #       Do navigation
@@ -87,8 +89,6 @@ class Runner():
             else:
                 print("I'm sorry Larry, I don't understand that response.")
 
-    def isQuestion(self, text: str, recipe: Recipe) -> bool:
-        return False
     
     def splitAndAddInstructions(self, scraper):
         instructions = scraper.instructions()

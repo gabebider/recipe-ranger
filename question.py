@@ -49,7 +49,7 @@ def isQuestion(sentence: str) -> bool:
     # NOTE: this does not include the word `can` as a question word
     # because the word `can` is used for navigational purposes
     # but we may want to revisit this
-    question_words = set("what", "when", "where", "which", "who", "whom", "whose", "why", "how")
+    question_words = {"what", "when", "where", "which", "who", "whom", "whose", "why", "how"}
     for token in sentence_tokens:
         if token in question_words:
             return True
