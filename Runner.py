@@ -5,8 +5,7 @@ import spacy
 from RecipeFinder import RecipeFinder
 import re
 from navigation import isNavigation, doNavigation
-from question import isGeneralQuestion
-from question import questionParser
+from question import isGeneralQuestion, questionParser
 
 class Runner():
     def __init__(self, link=None):
