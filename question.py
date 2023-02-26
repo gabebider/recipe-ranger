@@ -86,11 +86,10 @@ def questionParser(question: str, recipe: Recipe):
                 if is_amount_question(question):
                     # if we get a KeyError, then its probably because I normalized the ingredient name
                     return str(recipe.ingredients[ingredient_name])
-                elif is_substituion_question(question):
-                    # code here to handle questions like "what can I use instead of X"
-                    # or subsitution questions
-                    # it should link to a google search
-                    pass
+                elif is_substitution_question(question):
+                    question = question.lower().strip()
+                    question = question.replace(" ", "+")
+                    return f"You can find information about substituting that ingredient here https://www.google.com/search?q={question}"
                 else:
                     # question is not about the amount
                     return scrape_youtube_for_question(question)
@@ -122,7 +121,7 @@ def is_amount_question(question: str) -> bool:
     
     return False
 
-def is_substituion_question(question: str) -> bool:
+def is_substitution_question(question: str) -> bool:
     '''
     This function takes a question and returns True if it is a question about substituting an ingredient, False otherwise.
 
@@ -132,7 +131,21 @@ def is_substituion_question(question: str) -> bool:
     Returns:
         bool: True if the question is about substituting an ingredient, False otherwise
     '''
+
+    assert type(question) == str, "question must be a string"
     
+    # normalize the question
+    question = question.lower().strip()
+
+    substitution_words = {"substitute", "instead of", "instead", "substitution", "replace", "sub", "use", "exchange"}
+
+    # tokenize the question
+    question_tokens = tokenize(question)
+
+    for token in question_tokens:
+        if token in substitution_words:
+            return True
+
     return False
 
 def scrape_youtube_for_question(question: str) -> str:

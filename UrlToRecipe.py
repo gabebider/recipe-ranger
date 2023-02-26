@@ -14,6 +14,12 @@ def UrlToRecipe(url):
     print()
     print("You will need the following ingredients:")
 
+    # TODO: This does not always scrape ingredients correctly
+    # if the recipe has different `sections` of ingredients, it will only get the first part
+    # example: https://www.allrecipes.com/recipe/70935/taqueria-style-tacos-carne-asada/
+    # TODO: fix this... probably check for other sections or something, have to look at HTML
+    # code to know for sure
+    
     for ingredient in ingredients_list:
         sections = ingredient.find_all("span")
         newIngredient = Ingredient()
