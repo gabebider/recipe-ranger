@@ -5,7 +5,7 @@ import spacy
 from RecipeFinder import RecipeFinder
 import re
 from navigation import isNavigation, doNavigation
-from question import isQuestion
+from question import isGeneralQuestion
 from question import questionParser
 
 class Runner():
@@ -69,7 +69,7 @@ class Runner():
         #     2. Get input
             response = input("What would you like to do next?: \n").lower().strip()
         #   If input is question
-            if isQuestion(response):
+            if isGeneralQuestion(response):
         #         - TODO - Make list of question words
         #         1. Determine if question is about ingredients
         #             1. What is X?

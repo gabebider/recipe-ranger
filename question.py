@@ -26,7 +26,7 @@ def tokenize(text: str) -> list:
 	return tokens
 
 
-def isQuestion(sentence: str) -> bool:
+def isGeneralQuestion(sentence: str) -> bool:
     '''
         This function takes a sentence and returns True if it is a question, False otherwise.
 
@@ -86,6 +86,11 @@ def questionParser(question: str, recipe: Recipe):
                 if is_amount_question(question):
                     # if we get a KeyError, then its probably because I normalized the ingredient name
                     return str(recipe.ingredients[ingredient_name])
+                elif is_substituion_question(question):
+                    # code here to handle questions like "what can I use instead of X"
+                    # or subsitution questions
+                    # it should link to a google search
+                    pass
                 else:
                     # question is not about the amount
                     return scrape_youtube_for_question(question)
@@ -114,6 +119,19 @@ def is_amount_question(question: str) -> bool:
     for keyword in amount_keywords:
         if keyword in question:
             return True
+    
+    return False
+
+def is_substituion_question(question: str) -> bool:
+    '''
+    This function takes a question and returns True if it is a question about substituting an ingredient, False otherwise.
+
+    Parameters:
+        question (str): The question to be checked
+
+    Returns:
+        bool: True if the question is about substituting an ingredient, False otherwise
+    '''
     
     return False
 
