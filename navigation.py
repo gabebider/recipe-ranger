@@ -14,6 +14,7 @@ nextWords = [
     "next",
     "continue",
     "okay",
+    "ok",
     "next step",
     "forward",
     "move on",

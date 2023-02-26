@@ -75,7 +75,7 @@ def questionParser(question: str, recipe: Recipe):
     question = question.lower().strip()
 
     # check if question is about the ingredients
-    question_tokens = question.split()
+    question_tokens = tokenize(question)
     # create list of noramlized ingredients
     ingredient_names = [ingredient.lower().strip() for ingredient in recipe.ingredients]
     for token in question_tokens:

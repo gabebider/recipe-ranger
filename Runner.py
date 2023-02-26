@@ -88,6 +88,8 @@ class Runner():
         #   If input is not question or navigation
             else:
                 print("I'm sorry Larry, I don't understand that response.")
+            
+        print("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!")
 
     
     def splitAndAddInstructions(self, scraper):
