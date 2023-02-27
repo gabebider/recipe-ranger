@@ -59,6 +59,9 @@ class Runner():
             else:
                 showAllSteps = input("I'm sorry, I don't understand that response. Would you like to see all of the steps or just the first step?").lower().strip()
 
+        # TODO: do we really want to continue this code below if the user selects show all steps? or maybe enter a different flow to just
+        # take in questions, but not show the steps by default?
+
         print("\nHere is the first step:")
         # 5. For all steps
         while self.step < len(self.recipe.instructions):
