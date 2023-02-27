@@ -29,4 +29,8 @@
         3. Do navigation
     
 
-
+- TODO
+    - Include case where user asks for a new recipe
+    - Include case where user asks for all steps after selecting just the first step
+    - Include case where user ends or says finished or exit etc.
+    
