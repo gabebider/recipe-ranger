@@ -94,6 +94,20 @@ class Recipe():
             else:
                 print(ingredient)
 
+    def getIngredientsListAsString(self):
+        '''
+            Returns a string of all ingredients in the recipe
+            This is used to read the ingredients aloud
+
+            Returns:
+                ingredients (str): A string of all ingredients in the recipe
+        '''
+        ingredients = "You will need the following ingredients:\n"
+        for ingredient in self.ingredients:
+            ingredients += str(self.ingredients[ingredient]) + ";\n"
+
+        return ingredients
+
     def printInstructions(self):
         # print each instructions, appending the step number to the beginning
         step_num = 1
@@ -104,6 +118,10 @@ class Recipe():
     def printInstruction(self, step: int) -> None:
         # print the instruction at the given step
         print(f"Step {step}: {self.instructions[step-1]}")
+
+    def getInstruction(self, step: int) -> None:
+        # print the instruction at the given step
+        return f"Step {step}: {self.instructions[step-1]}"
 
     def printRecipe(self, printBreakdownIng=False):
         self.printIngredients(printBreakdownIng)

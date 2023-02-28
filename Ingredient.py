@@ -26,3 +26,4 @@ class Ingredient():
 
     def getBreakdown(self):
         return f"{str(self)}\n   Quantity: {self.quantity}\n    Unit: {self.unit}\n    Name: {self.name}"
+        

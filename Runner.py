@@ -6,9 +6,14 @@ from RecipeFinder import RecipeFinder
 import re
 from navigation import isNavigation, doNavigation
 from question import isGeneralQuestion, questionParser
+from voiceToTextProofOfConcept import listener, reader
+import pyttsx3
 
 class Runner():
-    def __init__(self, link=None):
+    def __init__(self, link=None, voice=False):
+        # if the user wants to use voice then initialize the text-to-speech engine
+        if voice:
+            engine = pyttsx3.init()
         # 1. Get recipe either from url or from recipe search
         if link == None:
             # Chose recipe method
@@ -40,10 +45,18 @@ class Runner():
         self.splitAndAddInstructions(scraper)
 
         # Print Ingredients
-        self.recipe.printIngredients(True)
+        if voice:
+            reader(self.recipe.getIngredientsListAsString(), engine=engine)
+        else:
+            self.recipe.printIngredients(True)
         print()
         # 4. Option to see all steps or just the first step
-        showAllSteps = input("Would you like to see all of the steps or just the first step?: ").lower().strip()
+        if voice:
+            reader("Would you like to see all of the steps or just the first step?", engine=engine)
+            showAllSteps, confidence = listener()
+            showAllSteps = showAllSteps.lower().strip()
+        else:
+            showAllSteps = input("Would you like to see all of the steps or just the first step?: ").lower().strip()
         print()
         regexAll = r'\b(all|all of them|all of the steps|all of the instructions|all of the directions)\b'
         regexFirst = r'\b(first|first step|first one|first instruction|first direction)\b'
@@ -57,19 +70,35 @@ class Runner():
                 self.step = 1
                 showAllStepsSelection = True
             else:
-                showAllSteps = input("I'm sorry, I don't understand that response. Would you like to see all of the steps or just the first step?").lower().strip()
+                if voice:
+                    reader("Would you like to see all of the steps or just the first step?", engine=engine)
+                    showAllSteps, confidence = listener()
+                    showAllSteps = showAllSteps.lower().strip()
+                else:
+                    showAllSteps = input("I'm sorry, I don't understand that response. Would you like to see all of the steps or just the first step?").lower().strip()
 
         # TODO: do we really want to continue this code below if the user selects show all steps? or maybe enter a different flow to just
         # take in questions, but not show the steps by default?
 
-        print("\nHere is the first step:")
+        if voice:
+            reader("\nHere is the first step:", engine=engine)
+        else:
+            print("\nHere is the first step:")
         # 5. For all steps
         while self.step < len(self.recipe.instructions):
         #     1. Output text
             print()
-            self.recipe.printInstruction(self.step)
+            if voice:
+                reader(self.recipe.getInstruction(self.step), engine=engine)
+            else:
+                self.recipe.printInstruction(self.step)
         #     2. Get input
-            response = input("What would you like to do next?: \n").lower().strip()
+            if voice:
+                reader("What would you like to do next?: \n")
+                response, confidence = listener()
+                response = response.lower().strip()
+            else:
+                response = input("What would you like to do next?: \n").lower().strip()
         #   If input is question
             if isGeneralQuestion(response):
         #         - TODO - Make list of question words
@@ -81,7 +110,10 @@ class Runner():
         #             1. What is the temperature?
         #             2. What is the time?
         #             3. How much of X?
-                print(questionParser(response, self.recipe))
+                if voice:
+                    reader(questionParser(response, self.recipe), engine=engine)
+                else:
+                    print(questionParser(response, self.recipe))
         #   If input is navigation
             elif isNavigation(response):
         #       Do navigation
@@ -89,9 +121,15 @@ class Runner():
                 
         #   If input is not question or navigation
             else:
-                print("I'm sorry Larry, I don't understand that response.")
+                if voice:
+                    reader("I'm sorry Larry, I don't understand that response.", engine=engine)
+                else:
+                    print("I'm sorry Larry, I don't understand that response.")
             
-        print("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!")
+        if voice:
+            reader("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!", engine=engine)
+        else:
+            print("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!")
 
     
     def splitAndAddInstructions(self, scraper):
@@ -105,4 +143,4 @@ class Runner():
             self.recipe.addInstruction(sent)
 
 if __name__ == '__main__':
-    Runner()
+    Runner(voice=True)

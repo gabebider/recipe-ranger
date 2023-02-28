@@ -12,7 +12,7 @@ def listener():
 
     # use the default microphone as the audio source
     with sr.Microphone() as source:
-        print("Say something!")
+        print("Please say your input aloud")
         audio = r.listen(source)
 
     # recognize speech using Google Speech Recognition
@@ -28,9 +28,11 @@ def listener():
         # print(f"Could not request results from Google Speech Recognition service; {e}")
         return None
 
-def reader():
+def reader(text, engine=None):
     # Initialize the text-to-speech engine
-    engine = pyttsx3.init()
+    if not engine:
+        engine = pyttsx3.init()
+    print(text)
     engine.say(text)
     engine.runAndWait()
 
@@ -39,4 +41,4 @@ if __name__ == "__main__":
     if text is not None:
         print(text)
         print(f"confidence_score: {confidence_score}")
-        reader()
+        reader(text)
