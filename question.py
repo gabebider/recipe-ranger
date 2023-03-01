@@ -77,15 +77,23 @@ def questionParser(question: str, recipe: Recipe):
     # check if question is about the ingredients
     question_tokens = tokenize(question)
     # create list of noramlized ingredients
-    ingredient_names = [ingredient.lower().strip() for ingredient in recipe.ingredients]
+    ingredient_names = [ingredient for ingredient in recipe.ingredients]
     for token in question_tokens:
         for ingredient_name in ingredient_names:
-            if token in ingredient_name:
+            if re.search(r'\b{}\b'.format(token), ingredient_name.lower().strip()):
             # question is asking about ingredient: `token`
             # determine is the question is asking about the amount
                 if is_amount_question(question):
-                    # if we get a KeyError, then its probably because I normalized the ingredient name
-                    return str(recipe.ingredients[ingredient_name])
+                    ing = recipe.ingredients[ingredient_name]
+                    if ing.quantity == None:
+                        return "No specific quantity defined for " + ing.name
+                    elif ing.unit == None:
+                        return ing.quantity
+                    else:
+                        if isinstance(ing.unit, list) and isinstance(ing.quantity, list):
+                            return f"{ing.quantity[0]} {ing.unit[0]} and/of {ing.quantity[1]} {ing.unit[1]}"
+                        else:
+                            return f"{ing.quantity} {ing.unit}"
                 elif is_substitution_question(question):
                     question = question.lower().strip()
                     question = question.replace(" ", "+")
