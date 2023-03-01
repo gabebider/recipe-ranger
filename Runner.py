@@ -16,20 +16,7 @@ class Runner():
             engine = pyttsx3.init()
         # 1. Get recipe either from url or from recipe search
         if link == None:
-            # Chose recipe method
-            recipeMethod = input("Would you like to search for a recipe or provide your own link to one?: ").lower().strip()
-            regexSearch = r'\b(search|look( up)?|google|find|first|former)\b'
-            regexProvide = r'\b(link|provide|second|own|latter)\b'
-            methodSelection = False
-            while not methodSelection:
-                if re.search(regexSearch, recipeMethod):
-                    link = RecipeFinder()
-                    methodSelection = True
-                elif re.search(regexProvide, recipeMethod):
-                    link = input("Please provide the link to the recipe: ").strip()
-                    methodSelection = True
-                else:
-                    recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one?").lower().strip()
+            link = self.getRecipeLink()
         else:
             print(f"Using provided link: {link}")
 
@@ -48,7 +35,7 @@ class Runner():
         if voice:
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
         else:
-            self.recipe.printIngredients(True)
+            self.recipe.printIngredients(False)
         print()
         # 4. Option to see all steps or just the first step
         if voice:
@@ -131,7 +118,24 @@ class Runner():
         else:
             print("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!")
 
-    
+    # Gets the recipe link from one of two methods
+    def getRecipeLink(self):
+        # Chose recipe method
+        recipeMethod = input("Would you like to search for a recipe or provide your own link to one?: ").lower().strip()
+        regexSearch = r'\b(search|look( up)?|google|find|first|former)\b'
+        regexProvide = r'\b(link|provide|second|own|latter)\b'
+        methodSelection = False
+        while not methodSelection:
+            if re.search(regexSearch, recipeMethod):
+                link = RecipeFinder()
+                methodSelection = True
+            elif re.search(regexProvide, recipeMethod):
+                link = input("Please provide the link to the recipe: ").strip()
+                methodSelection = True
+            else:
+                recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one?").lower().strip()
+        return link
+
     def splitAndAddInstructions(self, scraper):
         instructions = scraper.instructions()
         instructions = instructions.replace("\n", "")
