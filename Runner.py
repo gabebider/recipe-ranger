@@ -138,6 +138,7 @@ class Runner():
         #   If input is navigation
             elif isNavigation(response):
         #       Do navigation
+                currStep = -1
                 self.step = doNavigation(response, self.step)
                 
         #   If input is not question or navigation
