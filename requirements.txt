@@ -7,3 +7,4 @@ SpeechRecognition
 pyaudio
 # had to brew install portaudio
 pyttsx3
+word2number
