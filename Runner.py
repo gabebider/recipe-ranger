@@ -12,8 +12,7 @@ import pyttsx3
 class Runner():
     def __init__(self, link=None, voice=False):
         # if the user wants to use voice then initialize the text-to-speech engine
-        if voice:
-            engine = pyttsx3.init()
+        engine = pyttsx3.init()
         # Get recipe either from url or from recipe search
         if link == None:
             link = self.getRecipeLink()
@@ -103,14 +102,18 @@ class Runner():
             else:
                 print("\nHere is the first step:")
         # 5. For all steps
+        currStep = -1
         while self.step < len(self.recipe.instructions):
         #     1. Output text
             print()
-            if voice and self.step > 0:
+            if (voice and self.step > 0) and currStep != self.step:
                 reader(self.recipe.getInstruction(self.step), engine=engine)
-            elif self.step > 0:
+                print()
+            elif self.step > 0 and currStep != self.step:
                 self.recipe.printInstruction(self.step)
+                print()
         #     2. Get input
+            currStep = self.step
             if voice:
                 reader("What would you like to do next?: \n")
                 response, confidence = listener()
