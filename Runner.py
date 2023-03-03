@@ -103,8 +103,10 @@ class Runner():
     def interactiveSteps(self, voice, engine):
         if(self.step == 1):
             if voice:
+                reader("There are " + str(len(self.recipe.instructions)) + " steps in this recipe.", engine=engine)
                 reader("\nHere is the first step:", engine=engine)
             else:
+                print("There are " + str(len(self.recipe.instructions)) + " steps in this recipe.")
                 print("\nHere is the first step:")
         # 5. For all steps
         currStep = -1
