@@ -67,7 +67,9 @@ class Runner():
                 recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one?").lower().strip()
         return link
     
+    # Determines whether or not to show all steps
     def allOrFirstStep(self, voice, engine):
+        # asks for preference
         if voice:
             reader("Would you like to see all of the steps or just the first step?", engine=engine)
             showAllSteps, confidence = listener()
@@ -75,6 +77,8 @@ class Runner():
         else:
             showAllSteps = input("Would you like to see all of the steps or just the first step?: ").lower().strip()
         print()
+
+        # Uses regex to determine response
         regexAll = r'\b(all|all of them|all of the steps|all of the instructions|all of the directions)\b'
         regexFirst = r'\b(first|first step|first one|first instruction|first direction)\b'
         showAllStepsSelection = False
@@ -87,8 +91,9 @@ class Runner():
                 self.step = 1
                 showAllStepsSelection = True
             else:
+                # Asks again if regex can't determine
                 if voice:
-                    reader("Would you like to see all of the steps or just the first step?", engine=engine)
+                    reader("I'm sorry, I don't understand. Would you like to see all of the steps or just the first step?", engine=engine)
                     showAllSteps, confidence = listener()
                     showAllSteps = showAllSteps.lower().strip()
                 else:
@@ -132,14 +137,21 @@ class Runner():
                     print()
                     self.recipe.printInstructions()
                 else:
-            #       Do navigation
+                    # Do navigation
                     currStep = -1
                     tempStep = doNavigation(response, self.step)
+                    # Checks if step is out of bounds
                     if tempStep < 1:
-                        print("\nStep out of bounds. Showing Step 1.")
+                        if voice:
+                            reader("\nStep out of bounds. Showing Step 1.", engine=engine)
+                        else:
+                            print("\nStep out of bounds. Showing Step 1.")
                         self.step = 1
                     elif tempStep > len(self.recipe.instructions):
-                        print("\nStep out of bounds. Showing final step instead.")
+                        if voice:
+                            reader("\nStep out of bounds. Showing final step instead.", engine=engine)
+                        else:
+                            print("\nStep out of bounds. Showing final step instead.")
                         self.step = len(self.recipe.instructions)
                     else:
                         self.step = tempStep
