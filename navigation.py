@@ -44,7 +44,8 @@ repeatWords = [
 specificStepWords = [
     'take me',
     'go to',
-    'want to see'
+    'want to see',
+    'show me'
 ]
 
 ordinal_numbers = {
@@ -180,7 +181,7 @@ def doNavigation(text: str, step: int) -> int:
     # check if asking for specific step
     text = text.lower().strip()
 
-    if 'take me to' in text or 'go to the' in text or 'i want to see' in text:
+    if any( word in text for word in specificStepWords):
         step_request = re.search(r'\d+', text)
         if step_request:
             step_request = int(step_request.group())
