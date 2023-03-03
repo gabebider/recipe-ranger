@@ -103,7 +103,7 @@ class Runner():
                 print("\nHere is the first step:")
         # 5. For all steps
         currStep = -1
-        while self.step < len(self.recipe.instructions):
+        while self.step < len(self.recipe.instructions) + 1:
         #     1. Output text
             print()
             if (voice and self.step > 0) and currStep != self.step:
@@ -139,7 +139,15 @@ class Runner():
             elif isNavigation(response):
         #       Do navigation
                 currStep = -1
-                self.step = doNavigation(response, self.step)
+                tempStep = doNavigation(response, self.step)
+                if tempStep < 1:
+                    print("\nStep out of bounds. Showing Step 1.")
+                    self.step = 1
+                elif tempStep > len(self.recipe.instructions):
+                    print("\nStep out of bounds. Showing final step instead.")
+                    self.step = len(self.recipe.instructions)
+                else:
+                    self.step = tempStep
                 
         #   If input is not question or navigation
             else:
