@@ -4,7 +4,7 @@ from Recipe import Recipe
 import spacy
 from RecipeFinder import RecipeFinder
 import re
-from navigation import isNavigation, doNavigation
+from navigation import isNavigation, doNavigation, isAllSteps
 from question import isGeneralQuestion, questionParser
 from voiceToTextProofOfConcept import listener, reader
 import pyttsx3
@@ -67,7 +67,9 @@ class Runner():
                 recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one?").lower().strip()
         return link
     
+    # Determines whether or not to show all steps
     def allOrFirstStep(self, voice, engine):
+        # asks for preference
         if voice:
             reader("Would you like to see all of the steps or just the first step?", engine=engine)
             showAllSteps, confidence = listener()
@@ -75,6 +77,8 @@ class Runner():
         else:
             showAllSteps = input("Would you like to see all of the steps or just the first step?: ").lower().strip()
         print()
+
+        # Uses regex to determine response
         regexAll = r'\b(all|all of them|all of the steps|all of the instructions|all of the directions)\b'
         regexFirst = r'\b(first|first step|first one|first instruction|first direction)\b'
         showAllStepsSelection = False
@@ -87,23 +91,26 @@ class Runner():
                 self.step = 1
                 showAllStepsSelection = True
             else:
+                # Asks again if regex can't determine
                 if voice:
-                    reader("Would you like to see all of the steps or just the first step?", engine=engine)
+                    reader("I'm sorry, I don't understand. Would you like to see all of the steps or just the first step?", engine=engine)
                     showAllSteps, confidence = listener()
                     showAllSteps = showAllSteps.lower().strip()
                 else:
-                    showAllSteps = input("I'm sorry, I don't understand that response. Would you like to see all of the steps or just the first step?").lower().strip()
+                    showAllSteps = input("I'm sorry, I don't understand that response. Would you like to see all of the steps or just the first step?" ).lower().strip()
 
     # All interaction with user after initial selections happens here
     def interactiveSteps(self, voice, engine):
         if(self.step == 1):
             if voice:
+                reader("There are " + str(len(self.recipe.instructions)) + " steps in this recipe.", engine=engine)
                 reader("\nHere is the first step:", engine=engine)
             else:
+                print("There are " + str(len(self.recipe.instructions)) + " steps in this recipe.")
                 print("\nHere is the first step:")
         # 5. For all steps
         currStep = -1
-        while self.step < len(self.recipe.instructions):
+        while self.step < len(self.recipe.instructions) + 1:
         #     1. Output text
             print()
             if (voice and self.step > 0) and currStep != self.step:
@@ -122,24 +129,35 @@ class Runner():
                 response = input("What would you like to do next?: \n").lower().strip()
         #   If input is question
             if isGeneralQuestion(response):
-        #         - TODO - Make list of question words
-        #         1. Determine if question is about ingredients
-        #             1. What is X?
-        #             2. What can I substitute for X?
-        #         2. Determine if question is about steps
-        #         3. Determine if question is about parameters
-        #             1. What is the temperature?
-        #             2. What is the time?
-        #             3. How much of X?
                 if voice:
                     reader(questionParser(response, self.recipe), engine=engine)
                 else:
                     print(questionParser(response, self.recipe))
         #   If input is navigation
             elif isNavigation(response):
-        #       Do navigation
-                self.step = doNavigation(response, self.step)
-                
+                if isAllSteps(response):
+                    print()
+                    self.recipe.printInstructions()
+                else:
+                    # Do navigation
+                    currStep = -1
+                    tempStep = doNavigation(response, self.step)
+                    # Checks if step is out of bounds
+                    if tempStep < 1:
+                        if voice:
+                            reader("\nStep out of bounds. Showing Step 1.", engine=engine)
+                        else:
+                            print("\nStep out of bounds. Showing Step 1.")
+                        self.step = 1
+                    elif tempStep > len(self.recipe.instructions) + 1:
+                        if voice:
+                            reader("\nStep out of bounds. Showing final step instead.", engine=engine)
+                        else:
+                            print("\nStep out of bounds. Showing final step instead.")
+                        self.step = len(self.recipe.instructions)
+                    else:
+                        self.step = tempStep
+                    
         #   If input is not question or navigation
             else:
                 if voice:
