@@ -147,7 +147,7 @@ class Runner():
                         else:
                             print("\nStep out of bounds. Showing Step 1.")
                         self.step = 1
-                    elif tempStep > len(self.recipe.instructions):
+                    elif tempStep > len(self.recipe.instructions) + 1:
                         if voice:
                             reader("\nStep out of bounds. Showing final step instead.", engine=engine)
                         else:
