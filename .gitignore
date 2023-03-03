@@ -132,3 +132,4 @@ dmypy.json
 
 env/
 env/*
+.html
