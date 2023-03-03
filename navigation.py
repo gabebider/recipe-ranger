@@ -48,6 +48,13 @@ specificStepWords = [
     'show me'
 ]
 
+allStepsWords = [
+    'all the steps',
+    'all the instructions',
+    'all the directions',
+    'all the steps of the recipe',
+    'show me all', 
+]
 ordinal_numbers = {
     "first": 1,
     "second": 2,
@@ -172,7 +179,7 @@ def tokenize(text: str) -> list:
 	return tokens
 
 def isNavigation(text: str) -> bool:
-    allWords = previousWords + nextWords + repeatWords + specificStepWords
+    allWords = previousWords + nextWords + repeatWords + specificStepWords + allStepsWords
     if any(word in text for word in allWords):
         return True
     return False
@@ -201,3 +208,8 @@ def doNavigation(text: str, step: int) -> int:
     else:
         return step
 
+
+def isAllSteps(text: str) -> bool:
+    if any(word in text for word in allStepsWords):
+        return True
+    return False
