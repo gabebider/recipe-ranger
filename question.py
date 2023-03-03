@@ -74,7 +74,18 @@ def questionParser(question: str, recipe: Recipe):
     # normalize the question
     question = question.lower().strip()
 
+    # check if vague question
+    # i.e. "how do i do that?"
+
+    # check if "what is" question
+    # i.e. "what is an oven"
+    if question.startswith("what is a") or question.startswith('what is an'):
+        return google_search(question)
+
     # check if question is about the ingredients
+    # i.e. "how much flour do I need?"
+    # i.e. "what can i replace the flour with?"
+    # i.e. "what can i substitute for the flour?"
     question_tokens = tokenize(question)
     # create list of noramlized ingredients
     ingredient_names = [ingredient for ingredient in recipe.ingredients]
@@ -96,13 +107,9 @@ def questionParser(question: str, recipe: Recipe):
                             return f"{ing.quantity} {ing.unit}"
                 elif is_substitution_question(question):
                     question = question.lower().strip()
-                    question = question.replace(" ", "+")
-                    return f"You can find information about substituting that ingredient here https://www.google.com/search?q={question}"
-                else:
-                    # question is not about the amount
-                    return scrape_youtube_for_question(question)
+                    return google_search(question)
     
-    return scrape_youtube_for_question(question)
+    return google_search(question)
     return "I don't know the answer to that question yet."
 
 
@@ -180,6 +187,21 @@ def scrape_youtube_for_question(question: str) -> str:
     url = f"https://www.youtube.com/results?search_query={question}"
 
     return f"Great question! 😚 Here are some videos that might help: {url} 🥰"
+
+def google_search(question: str) -> str:
+    '''
+    This function takes a question and returns a response with a link to a google search
+
+    Parameters:
+        question (str): The question to search  
+
+    Returns:    
+        str: The answer containing a link to google
+    '''
+
+    question = question.replace(" ", "+")
+    url = f"https://www.google.com/search?q={question}"
+    return f"Great question! 😚 Here are some results that might help: {url} 🥰"
 
 
 
