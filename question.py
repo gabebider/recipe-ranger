@@ -79,7 +79,7 @@ def questionParser(question: str, recipe: Recipe):
 
     # check if "what is" question
     # i.e. "what is an oven"
-    if question.startswith("what is a") or question.startswith('what is an'):
+    if "what is a" in question or 'what is an' in question:
         return google_search(question)
 
     # check if question is about the ingredients
@@ -109,7 +109,7 @@ def questionParser(question: str, recipe: Recipe):
                     question = question.lower().strip()
                     return google_search(question)
     
-    return google_search(question)
+    return youtube_search(question)
     return "I don't know the answer to that question yet."
 
 
@@ -163,7 +163,7 @@ def is_substitution_question(question: str) -> bool:
 
     return False
 
-def scrape_youtube_for_question(question: str) -> str:
+def youtube_search(question: str) -> str:
     '''
     This function takes a question and returns a response with a link to a youtube video
     answering the question

@@ -180,7 +180,7 @@ def doNavigation(text: str, step: int) -> int:
     # check if asking for specific step
     text = text.lower().strip()
 
-    if text.startswith('take me to the') or text.startswith('go to the') or text.startswith('i want to see'):
+    if 'take me to' in text or 'go to the' in text or 'i want to see' in text:
         step_request = re.search(r'\d+', text)
         if step_request:
             step_request = int(step_request.group())
