@@ -1,4 +1,5 @@
-
+from utils import merge_compound_and_proper_nouns
+import spacy
 class Ingredient():
     def __init__(self, name="[ENTER NAME]", quantity="[ENTER QUANTITY]", unit="[ENTER UNIT]"):
         self.name = name
@@ -14,6 +15,15 @@ class Ingredient():
             return f"{self.quantity[0]} {self.unit[0]} and/of {self.quantity[1]} {self.unit[1]} {self.name}"
         else:
             return f"{self.quantity} {self.unit} {self.name}"
+        
+    @staticmethod
+    def getMainIngredientBody(ingredientName):
+        nlp = spacy.load("en_core_web_md")
+        nlp.add_pipe("merge_compound_and_proper_nouns")
+        doc = nlp(ingredientName)
+        #TODO: implement this function --> should return the text of the noun chunk that is the main ingredient. ex: "the shredded parmesan cheese" should return "parmesan cheese"
+        
+        
     
     def setName(self, name):
         self.name = name
