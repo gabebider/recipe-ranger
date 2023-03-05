@@ -4,11 +4,8 @@ from recipe_scrapers import scrape_me
 import textacy
 import subprocess
 
-str1 = "Preheat the oven to 350 degrees F (175 degrees C)."
-str2 = "Lightly grease a large baking sheet with cooking spray."
-str3 = "Whisk soy sauce, agave, sesame oil, garlic, and ginger together in a bowl until evenly combined."
 
-def ParseDependency(s=str1):
+def ParseDependency(s):
     nlp = spacy.load("en_core_web_md")
     nlp.add_pipe("merge_noun_chunks")
     doc = nlp(s)
@@ -20,4 +17,4 @@ def ParseDependency(s=str1):
 link = 'https://www.allrecipes.com/recipe/20171/quick-and-easy-pizza-crust/'
 
 if __name__ == '__main__':
-    ParseDependency(str3)
+    ParseDependency("Whisk together oil and lemon juice for 3 minutes.")
