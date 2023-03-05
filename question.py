@@ -76,6 +76,7 @@ def questionParser(question: str, recipe: Recipe):
 
     # check if vague question
     # i.e. "how do i do that?"
+    #TODO: implement
 
     # check if "what is" question
     # i.e. "what is an oven"
@@ -89,9 +90,12 @@ def questionParser(question: str, recipe: Recipe):
     question_tokens = tokenize(question)
     # create list of noramlized ingredients
     ingredient_names = [ingredient for ingredient in recipe.ingredients]
+
+    found_a_match = False
     for token in question_tokens:
         for ingredient_name in ingredient_names:
             if re.search(r'\b{}\b'.format(token), ingredient_name.lower().strip()):
+                found_a_match = True
             # question is asking about ingredient: `token`
             # determine is the question is asking about the amount
                 if is_amount_question(question):
@@ -108,6 +112,10 @@ def questionParser(question: str, recipe: Recipe):
                 elif is_substitution_question(question):
                     question = question.lower().strip()
                     return google_search(question)
+                
+    # if the ingredient is not in the recipe:
+    if not found_a_match:
+        return "I don't believe that is an ingredient in the recipe, sorry 😔"
     
     return youtube_search(question)
     return "I don't know the answer to that question yet."

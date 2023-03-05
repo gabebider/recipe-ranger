@@ -22,6 +22,15 @@ def merge_compound_and_proper_nouns(doc):
 
     return doc
 
+def get_dependent_nouns(head_token):
+    dependent_nouns = []
+    for token in head_token.doc:
+        if token.head == head_token:
+            if token.pos_ in ['PROPN', 'NOUN']:
+                dependent_nouns.append(token.txt)
+            else:
+                dependent_nouns += get_dependent_nouns(token)
+    return dependent_nouns
 
 def ParseDependency(s):
     """
@@ -34,13 +43,11 @@ def ParseDependency(s):
     with open("parse2.html", "w", encoding="utf-8") as f:
         f.write(html)
     subprocess.run(["open", "parse2.html"], check=True)
+
+def miniRunner(s):
+    ParseDependency(s)
     
 link = 'https://www.allrecipes.com/recipe/20171/quick-and-easy-pizza-crust/'
 
 if __name__ == '__main__':
-    # ParseDependency("blue cheese pizza")
-    # ParseDependency("shredded cheese")
-    # ParseDependency("parmesan cheese")
-    ParseDependency("the shredded parmesan cheese")
-    ParseDependency("parmesan cheese, shredded")
-    ParseDependency("paprika, or to taste")
+    miniRunner("Slice eggs in half lengthwise and remove yolks; set whites aside.")
