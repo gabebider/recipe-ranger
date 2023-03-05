@@ -71,8 +71,6 @@ Close
 Watch
 Move
 Drop
-Using
-Working
 Check
 Trim
 Coat
@@ -159,3 +157,4 @@ Pull
 Replace
 Wet
 Bruise
+Season
