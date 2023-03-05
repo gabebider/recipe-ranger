@@ -21,12 +21,24 @@ class Ingredient():
         nlp = spacy.load("en_core_web_md")
         nlp.add_pipe("merge_compound_and_proper_nouns")
         doc = nlp(ingredientName)
-        #TODO: implement this function --> should return the text of the noun chunk that is the main ingredient. ex: "the shredded parmesan cheese" should return "parmesan cheese"
-        
-        
-    
+
+        assert len(list(doc.noun_chunks)) == 1, "More than one noun chunk in ingredient name"
+        for np in doc.noun_chunks:
+            # print(np.text)
+            for token in np:
+                # print(token.text,token.pos_)
+                if token.pos_ in ["PROPN","NOUN"]:
+                    return token.text
+                
+        print("getMainIngredientBody: No noun found in ingredient name, returning None")
+        return None
+                
     def setName(self, name):
         self.name = name
+        self.mainIngredientBody = Ingredient.getMainIngredientBody(self.name)
+        # print("Ingredient name:", self.name)
+        # print("Main ingredient body:", self.mainIngredientBody)
+        # print()
     
     def setQuantity(self, quantity):
         self.quantity = quantity

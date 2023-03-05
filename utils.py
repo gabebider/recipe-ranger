@@ -15,6 +15,11 @@ def merge_compound_and_proper_nouns(doc):
                 startIdx = boolArray.index(True)
                 endIdx = len(boolArray) - boolArray[::-1].index(True)
                 retokenizer.merge(np[startIdx:endIdx])
+    
+    for np in doc.noun_chunks:
+        boolArray = [tok.pos_ in ["PROPN", "NOUN"] for tok in np]
+        assert boolArray.count(True) <= 1, "More than one noun after noun chunks merged"
+
     return doc
 
 
@@ -38,3 +43,4 @@ if __name__ == '__main__':
     # ParseDependency("parmesan cheese")
     ParseDependency("the shredded parmesan cheese")
     ParseDependency("parmesan cheese, shredded")
+    ParseDependency("paprika, or to taste")
