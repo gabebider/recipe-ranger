@@ -44,8 +44,10 @@ class Instruction:
                         modifiers.append(("until", "boiling"))
                     elif token.text.lower() == "until":
                         modifiers.append(("until", subtree_text))
-                    elif re.search(r"(minutes?)|(hours?)|(seconds?)", subtree_text):
+                    elif re.search(r"(?i)(minutes?)|(hours?)|(seconds?)", subtree_text):
                         modifiers.append(("time", subtree_text))
+                    elif re.search(r"(?i)(degrees?)|( F )|( C )", subtree_text):
+                        modifiers.append(("temperature", get_subtree_text(list(token.children)[0])))
                 elif token.dep_ == "npadvmod" and re.search(r"(minutes?)|(hours?)|(seconds?)", subtree_text):
                     modifiers.append(("time", subtree_text))
 
