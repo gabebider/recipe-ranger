@@ -162,10 +162,11 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
     
     if is_vague_question(question):
         currentInstruction = recipe.getInstructionObject(current_step)
-        if is_action_or_information_question(question) == "action":
-            return youtube_search(currentInstruction.text)
-        elif is_action_or_information_question(question) == "information":
-            return google_search(currentInstruction.text)
+        # if is_action_or_information_question(question) == "action":
+        #     return youtube_search(currentInstruction.text)
+        # elif is_action_or_information_question(question) == "information":
+        #     return google_search(currentInstruction.text)
+        return google_search(currentInstruction.text)
 
     return "I don't know the answer to that question yet."
 
@@ -217,12 +218,14 @@ def is_vague_question(question: str) -> bool:
 
     # normalize the question
     question = question.lower().strip()
+    question = re.sub(r"[^a-zA-Z\s]+", "", question)
 
-    vague_keywords = ["how do", "what is"]
+
+    vague_keywords = ["how do i do that", "what is this", "how", "what" , "whats that", "why"]
     
     for keyword in vague_keywords:
-        if keyword in question:
-            print("vague question")
+        if keyword == question:
+            # print("vague question")
             return True
     
     return False
@@ -248,11 +251,11 @@ def is_action_or_information_question(question: str) -> str:
     information_keywords = ["what is", "what is a", "what is an", "what is the", "what is the difference", "what is the difference between", "what is the difference between a", "what is the difference between an", "what is the difference between the", "what is the difference between the two", "what is the difference between the two?", "what is the difference between the two?"]
     for keyword in action_keywords:
         if keyword in question:
-            print("action question")
+            # print("action question")
             return "action"
     for keyword in information_keywords:
         if keyword in question:
-            print("information question")
+            # print("information question")
             return "information"
     return "unknown"
 
@@ -352,6 +355,7 @@ def youtube_search(question: str) -> str:
     question = question.lower().strip()
 
     # replace spaces with +'s
+    question = re.sub(r"[^a-zA-Z\s]+", "", question)
     question = question.replace(" ", "+")
 
     # create the url
@@ -369,9 +373,11 @@ def google_search(question: str) -> str:
     Returns:    
         str: The answer containing a link to google
     '''
-
+    question = re.sub(r"[^a-zA-Z\s]+", "", question)
     question = question.replace(" ", "+")
-    url = f"https://www.google.com/search?q={question}"
+    
+
+    url = f"https://www.google.com/search?q=how+to+{question}"
     return f"Great question! 😚 Here are some results that might help: {url} 🥰"
 
 
