@@ -140,9 +140,15 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
                         return_str += f"for {modifier[1]} "
                     elif modifier[0] == "until":
                         if ind == 0:
-                            return_str += f"{modifier[1]} "
+                            if "until" not in modifier[1]:
+                                return_str += f"until {modifier[1]} "
+                            else:
+                                return_str += f"{modifier[1]} "
                         else:
-                            return_str += f"or {modifier[1]} "
+                            if "until" not in modifier[1]:
+                                return_str += f"or until {modifier[1]} "
+                            else:
+                                return_str += f"or {modifier[1]} "
                 return return_str
         return "I'm sorry, I don't believe there is a duration or finish criteria associated with this step 👁️👄👁️"
 
