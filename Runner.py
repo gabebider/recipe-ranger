@@ -4,7 +4,7 @@ from Recipe import Recipe
 import spacy
 from RecipeFinder import RecipeFinder
 import re
-from navigation import isNavigation, doNavigation, isAllSteps
+from navigation import isAllIngredients, isNavigation, doNavigation, isAllSteps
 from question import isGeneralQuestion, questionParser
 from voiceToTextProofOfConcept import listener, reader
 import pyttsx3
@@ -138,6 +138,9 @@ class Runner():
                 if isAllSteps(response):
                     print()
                     self.recipe.printInstructions()
+                elif isAllIngredients(response):
+                    print()
+                    self.recipe.printIngredients(False)
                 else:
                     # Do navigation
                     currStep = -1

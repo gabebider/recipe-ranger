@@ -210,6 +210,11 @@ def doNavigation(text: str, step: int) -> int:
 
 
 def isAllSteps(text: str) -> bool:
-    if any(word in text for word in allStepsWords):
+    if any((word in text and not "ingredient" in text) for word in allStepsWords):
+        return True
+    return False
+
+def isAllIngredients(text: str) -> bool:
+    if any((word in text and "ingredient" in text) for word in allStepsWords):
         return True
     return False

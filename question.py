@@ -148,16 +148,31 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
 
     # Figure out if the question is vague, and if so, return a proper youtube or google search
     # check if vague question
+    if is_all_instruction_question(question):
+        return recipe.getInstructionsAsString()
+    
+    if is_all_ingredient_question(question):
+        return recipe.getIngredientsListAsString()
+    
     if is_vague_question(question):
         currentInstruction = recipe.getInstructionObject(current_step)
-        if isActionOrInformationQuestion(question) == "action":
+        if is_action_or_information_question(question) == "action":
             return youtube_search(currentInstruction.text)
-        elif isActionOrInformationQuestion(question) == "information":
+        elif is_action_or_information_question(question) == "information":
             return google_search(currentInstruction.text)
 
     return "I don't know the answer to that question yet."
 
-
+def is_all_instruction_question(question: str) -> bool:
+    if ("all" in question or "the" in question) and ("instructions" in question or "steps" in question):
+        print("all instructions question")
+        return True
+    
+def is_all_ingredient_question(question: str) -> bool:
+    if ("all" in question or "the" in question) and ("ingredients" in question or "items" in question):
+        print("all ingredients question")
+        return True
+    
 def is_amount_question(question: str) -> bool:
     '''
     This function takes a question and returns True if it is a question about an ingredient's amount, False otherwise.
@@ -206,7 +221,7 @@ def is_vague_question(question: str) -> bool:
     
     return False
 
-def isActionOrInformationQuestion(question: str) -> str:
+def is_action_or_information_question(question: str) -> str:
     '''
     This function takes a question and returns "action" if it is a question about an action, "information" if it is a question about information, and "unknown" if it is neither.
 

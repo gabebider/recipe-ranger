@@ -116,6 +116,22 @@ class Recipe():
             print(f"Step {step_num}: {instruction}")
             step_num += 1
 
+    def getInstructionsAsString(self):
+        '''
+            Returns a string of all instructions in the recipe
+            This is used to read the instructions aloud
+
+            Returns:
+                instructions (str): A string of all instructions in the recipe
+        '''
+        instructions = "Instructions:\n"
+        step_num = 1
+        for instruction in self.instructions:
+            instructions += f"Step {step_num}: {instruction};\n"
+            step_num += 1
+
+        return instructions
+
     def printInstruction(self, step: int) -> None:
         # print the instruction at the given step
         print(f"Step {step}: {self.instructions[step-1]}")
