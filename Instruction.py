@@ -6,11 +6,11 @@ class Instruction:
     def __init__(self,text):
         self.text = text
         self.parse_text()
-        #! remove this: printing for debugging
-        for parse in self.parses:
-            print("Parse: ")
-            print(self.parses[parse])
-            print()
+        # #! remove this: printing for debugging
+        # for parse in self.parses:
+        #     print("Parse: ")
+        #     print(self.parses[parse])
+        #     print()
 
     def __str__(self):
         return self.text

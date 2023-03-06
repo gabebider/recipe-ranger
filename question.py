@@ -75,7 +75,7 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
     assert current_step >= 0, "current_step must be within recipe bounds"
     assert current_step < len(recipe.instructions), "current_step must be within recipe bounds"
 
-    instruction = recipe.instructions[current_step]
+    instruction = recipe.instructions[current_step-1]
 
     # normalize the question
     question = question.lower().strip()
@@ -115,14 +115,14 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
         return "I don't believe that is an ingredient in the recipe, sorry 😔"
 
     if is_temperature_question(question):
-        for parse in instruction.parses:
+        for parse in instruction.parses.values():
             for modifier in parse.modifiers:
                 if modifier[0] == "temperature":
                     return modifier[1]
         return "I'm sorry, I don't believe there is a temperature associated with this step 🙊🙊🙊"
     
     if is_time_question(question):
-        for parse in instruction.parses:
+        for parse in instruction.parses.values():
             relevant_modifiers = []
 
             for modifier in parse.modifiers:
@@ -305,7 +305,7 @@ def is_time_question(question: str) -> bool:
     # normalize the question
     question = question.lower().strip()
 
-    amount_keywords = ["how long","until","is it done","when","time"]
+    amount_keywords = ["how long","until","is it done","when","time","done"]
 
     for keyword in amount_keywords:
         if keyword in question:
