@@ -129,9 +129,9 @@ class Runner():
         #   If input is question
             if isGeneralQuestion(response):
                 if voice:
-                    reader(questionParser(response, self.recipe), engine=engine)
+                    reader(questionParser(response, self.recipe, currStep), engine=engine)
                 else:
-                    print(questionParser(response, self.recipe))
+                    print(questionParser(response, self.recipe, currStep))
         #   If input is navigation
             elif isNavigation(response):
                 if isAllSteps(response):

@@ -56,7 +56,7 @@ def isGeneralQuestion(sentence: str) -> bool:
     
     return False
         
-def questionParser(question: str, recipe: Recipe):
+def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
     '''
     This function takes a question and returns a string with the answer.
 
@@ -70,6 +70,11 @@ def questionParser(question: str, recipe: Recipe):
 
     assert type(question) == str, "question must be a string"
     assert type(recipe) == Recipe, "recipe must be a Recipe object"
+    assert type(current_step) == int, "current_step must be an int"
+    assert current_step >= 0, "current_step must be within recipe bounds"
+    assert current_step < len(recipe.steps), "current_step must be within recipe bounds"
+
+    instruction = recipe.instructions[current_step]
 
     # normalize the question
     question = question.lower().strip()
@@ -112,9 +117,41 @@ def questionParser(question: str, recipe: Recipe):
                     return google_search(question)
                 
     # if the ingredient is not in the recipe:
-    if not found_a_match:
+    if not found_a_match and (is_substitution_question(question) or is_amount_question(question)):
         return "I don't believe that is an ingredient in the recipe, sorry 😔"
+
+    if is_temperature_question(question):
+        for parse in instruction.parses:
+            for modifier in parse.modifiers:
+                if modifier[0] == "temperature":
+                    return modifier[1]
+        return "I'm sorry, I don't believe there is a temperature associated with this step 🙊🙊🙊"
     
+    if is_time_question(question):
+        for parse in instruction.parses:
+            relevant_modifiers = []
+
+            for modifier in parse.modifiers:
+                if modifier[0] == "time":
+                    relevant_modifiers.append(modifier)
+            
+            for modifier in parse.modifiers:
+                if modifier[0] == "until":
+                    relevant_modifiers.append(modifier)
+
+            if len(relevant_modifiers) > 0:
+                return_str = ""
+                for ind, modifier in enumerate(relevant_modifiers):
+                    if modifier[0] == "time":
+                        return_str += f"for {modifier[1]} "
+                    elif modifier[0] == "until":
+                        if ind == 0:
+                            return_str += f"{modifier[1]} "
+                        else:
+                            return_str += f"or {modifier[1]} "
+                return return_str
+        return "I'm sorry, I don't believe there is a duration or finish criteria associated with this step 👁️👄👁️"
+
     # Figure out if the question is vague, and if so, return a proper youtube or google search
     # check if vague question
     # i.e. "how do i do that?"
@@ -174,6 +211,57 @@ def is_substitution_question(question: str) -> bool:
         if token in substitution_words:
             return True
 
+    return False
+
+def is_temperature_question(question: str) -> bool:
+    '''
+    This function takes a question and returns True if it is a question about temperature, False otherwise.
+
+    Parameters:
+        question (str): The question to be checked
+
+    Returns:
+        bool: True if the question is about temperature, False otherwise
+    '''
+
+    assert type(question) == str, "question must be a string"
+
+    # normalize the question
+    question = question.lower().strip()
+
+    temperature_words = {"temperature","heat","hot","cold","warm"}
+
+    # tokenize the question
+    question_tokens = tokenize(question)
+
+    for token in question_tokens:
+        if token in temperature_words:
+            return True
+
+    return False
+
+def is_time_question(question: str) -> bool:
+    '''
+    This function takes a question and returns True if it is a question about time, False otherwise.
+
+    Parameters:
+        question (str): The question to be checked
+
+    Returns:
+        bool: True if the question is about time, False otherwise
+    '''
+
+    assert type(question) == str, "question must be a string"
+
+    # normalize the question
+    question = question.lower().strip()
+
+    amount_keywords = ["how long","until","is it done","when","time"]
+
+    for keyword in amount_keywords:
+        if keyword in question:
+            return True
+    
     return False
 
 def youtube_search(question: str) -> str:
