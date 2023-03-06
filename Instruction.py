@@ -1,6 +1,7 @@
 import spacy
 from utils import get_subtree_text
 from Parse import Parse
+import re
 class Instruction:
     def __init__(self,text):
         self.text = text
@@ -27,16 +28,26 @@ class Instruction:
                 if child.dep_ == "conj" and child.pos_ == "VERB":
                     action_verbs.append(child)
                     get_action_verbs(child)
+
         get_action_verbs(root)
+
         def generate_parse(head_token):
             parse_verb = head_token.text
             dobjs = []
             modifiers = []
             for token in head_token.children:
+                subtree_text = get_subtree_text(token)
                 if token.dep_ == "dobj":
                     dobjs.append(get_subtree_text(token))
-
-            #TODO: modifiers
+                elif token.dep_ == "prep" and token.pos_ == "ADP":
+                    if re.search(r"(?i)boil(ing)?", subtree_text):
+                        modifiers.append(("until", "boiling"))
+                    elif token.text.lower() == "until":
+                        modifiers.append(("until", subtree_text))
+                    elif re.search(r"(minutes?)|(hours?)|(seconds?)", subtree_text):
+                        modifiers.append(("time", subtree_text))
+                elif token.dep_ == "npadvmod" and re.search(r"(minutes?)|(hours?)|(seconds?)", subtree_text):
+                    modifiers.append(("time", subtree_text))
 
             return Parse(parse_verb, dobjs, modifiers)
         

@@ -42,16 +42,18 @@ def ParseDependency(s):
     subprocess.run(["open", "parse2.html"], check=True)
 
 def miniRunner(s):
-    ParseDependency(s)
+    print(s)
+    # ParseDependency(s)
+    from Instruction import Instruction
+    Instruction(s)
     
 if __name__ == '__main__':
-    # miniRunner("Bring a large pot of lightly salted water to a boil")
-    # miniRunner("Cook orzo until al dente, 8 to 10 minutes.")
-    # miniRunner("Drain and rinse with cold water.")
-    # miniRunner("When orzo is cool, transfer to a medium bowl and mix in olives, feta cheese, parsley, dill, and tomato.")
-    # miniRunner("Whisk together oil and lemon juice in a small bowl.")
-    # miniRunner("Pour over orzo mixture; mix well.")
-    # miniRunner("Season with salt and pepper; chill before serving.")
-    # miniRunner("Slice eggs in half lengthwise and remove yolks")
-    from Instruction import Instruction
-    ins = Instruction("Slice eggs in half lengthwise and remove yolks")
+    miniRunner("Bring a large pot of lightly salted water to a boil")
+    miniRunner("Cook orzo until al dente, 8 to 10 minutes.")
+    miniRunner("Drain and rinse with cold water.")
+    miniRunner("When orzo is cool, transfer to a medium bowl and mix in olives, feta cheese, parsley, dill, and tomato.")
+    miniRunner("Whisk together oil and lemon juice in a small bowl.")
+    miniRunner("Pour over orzo mixture.")
+    miniRunner("mix well.")
+    miniRunner("Season with salt and pepper.")
+    miniRunner("chill before serving.")
