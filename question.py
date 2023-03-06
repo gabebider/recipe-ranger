@@ -74,9 +74,7 @@ def questionParser(question: str, recipe: Recipe):
     # normalize the question
     question = question.lower().strip()
 
-    # check if vague question
-    # i.e. "how do i do that?"
-    #TODO: implement
+   
 
     # check if "what is" question
     # i.e. "what is an oven"
@@ -117,6 +115,13 @@ def questionParser(question: str, recipe: Recipe):
     if not found_a_match:
         return "I don't believe that is an ingredient in the recipe, sorry 😔"
     
+    # Figure out if the question is vague, and if so, return a proper youtube or google search
+    # check if vague question
+    # i.e. "how do i do that?"
+    #TODO: implement
+
+    
+
     return youtube_search(question)
     return "I don't know the answer to that question yet."
 
