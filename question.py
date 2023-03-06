@@ -63,6 +63,7 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
     Parameters:
         question (str): The question to be parsed
         recipe (Recipe): The recipe to be used to answer the question
+        current_step (int): The current step of the recipe
 
     Returns:
         str: The answer to the question
@@ -72,19 +73,12 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
     assert type(recipe) == Recipe, "recipe must be a Recipe object"
     assert type(current_step) == int, "current_step must be an int"
     assert current_step >= 0, "current_step must be within recipe bounds"
-    assert current_step < len(recipe.steps), "current_step must be within recipe bounds"
+    assert current_step < len(recipe.instructions), "current_step must be within recipe bounds"
 
     instruction = recipe.instructions[current_step]
 
     # normalize the question
     question = question.lower().strip()
-
-   
-
-    # check if "what is" question
-    # i.e. "what is an oven"
-    if "what is a" in question or 'what is an' in question:
-        return google_search(question)
 
     # check if question is about the ingredients
     # i.e. "how much flour do I need?"
@@ -154,12 +148,13 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
 
     # Figure out if the question is vague, and if so, return a proper youtube or google search
     # check if vague question
-    # i.e. "how do i do that?"
-    #TODO: implement
+    if is_vague_question(question):
+        currentInstruction = recipe.getInstructionObject(current_step)
+        if isActionOrInformationQuestion(question) == "action":
+            return youtube_search(currentInstruction.text)
+        elif isActionOrInformationQuestion(question) == "information":
+            return google_search(currentInstruction.text)
 
-    
-
-    return youtube_search(question)
     return "I don't know the answer to that question yet."
 
 
@@ -185,6 +180,60 @@ def is_amount_question(question: str) -> bool:
             return True
     
     return False
+
+def is_vague_question(question: str) -> bool:
+    '''
+    This function takes a question and returns True if it is a vague question, False otherwise.
+
+    Parameters:
+        question (str): The question to be checked
+
+    Returns:
+        bool: True if the question is vague, False otherwise
+    '''
+
+    assert type(question) == str, "question must be a string"
+
+    # normalize the question
+    question = question.lower().strip()
+
+    vague_keywords = ["how do", "what is"]
+    
+    for keyword in vague_keywords:
+        if keyword in question:
+            print("vague question")
+            return True
+    
+    return False
+
+def isActionOrInformationQuestion(question: str) -> str:
+    '''
+    This function takes a question and returns "action" if it is a question about an action, "information" if it is a question about information, and "unknown" if it is neither.
+
+    Parameters:
+        question (str): The question to be checked
+
+    Returns:
+        str: "action" if the question is about an action, "information" if the question is about information, and "unknown" if it is neither
+    '''
+
+    assert type(question) == str, "question must be a string"
+
+
+    # normalize the question
+    question = question.lower().strip()
+
+    action_keywords = ["how do", "how do i", "how do i do", "how do i do that", "how do i do that?", "how do i do that?"]
+    information_keywords = ["what is", "what is a", "what is an", "what is the", "what is the difference", "what is the difference between", "what is the difference between a", "what is the difference between an", "what is the difference between the", "what is the difference between the two", "what is the difference between the two?", "what is the difference between the two?"]
+    for keyword in action_keywords:
+        if keyword in question:
+            print("action question")
+            return "action"
+    for keyword in information_keywords:
+        if keyword in question:
+            print("information question")
+            return "information"
+    return "unknown"
 
 def is_substitution_question(question: str) -> bool:
     '''

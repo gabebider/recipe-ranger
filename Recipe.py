@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from Ingredient import Ingredient
 from recipe_scrapers import scrape_me
 import re
+from Instruction import Instruction
 
 class Recipe():
     def __init__(self, url, ingredients = {}, instructions = []):
@@ -130,4 +131,7 @@ class Recipe():
         print()
         print("Yum! 😋")
 
+    def getInstructionObject(self, step: int) -> Instruction:
+        # return the instruction at the given step
+        return self.instructions[step-1]
     

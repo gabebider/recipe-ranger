@@ -1,4 +1,5 @@
 from recipe_scrapers import scrape_me
+from Instruction import Instruction
 from Recipe import Recipe
 import spacy
 from RecipeFinder import RecipeFinder
@@ -176,7 +177,7 @@ class Runner():
         doc = nlp(instructions)
         for sent in doc.sents:
             assert sent != None, "Sentence is None"
-            self.recipe.addInstruction(sent)
+            self.recipe.addInstruction(Instruction(sent.text))
 
 if __name__ == '__main__':
     Runner(voice=False)
