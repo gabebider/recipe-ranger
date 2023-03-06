@@ -1,10 +1,8 @@
 from recipe_scrapers import scrape_me
-from pprint import pprint
 from Recipe import Recipe
 import spacy
 from RecipeFinder import RecipeFinder
 import re
-from utils import split_coordinated_verbs
 from navigation import isNavigation, doNavigation, isAllSteps
 from question import isGeneralQuestion, questionParser
 from voiceToTextProofOfConcept import listener, reader
@@ -173,7 +171,7 @@ class Runner():
         instructions = instructions.replace("\n", "")
         instructions = re.sub(r"(?<![0-9])\.(?![0-9])",". ",instructions)
         instructions = instructions.replace("; ", ". ")
-        # instructions = split_coordinated_verbs(instructions)
+
         nlp = spacy.load('en_core_web_sm')
         doc = nlp(instructions)
         for sent in doc.sents:

@@ -35,10 +35,8 @@ class Ingredient():
                 
     def setName(self, name):
         self.name = name
-        self.mainIngredientBody = Ingredient.getMainIngredientBody(self.name)
-        # print("Ingredient name:", self.name)
-        # print("Main ingredient body:", self.mainIngredientBody)
-        # print()
+        # self.mainIngredientBody = Ingredient.getMainIngredientBody(self.name)
+
     
     def setQuantity(self, quantity):
         self.quantity = quantity
