@@ -169,7 +169,6 @@ class Runner():
                     print("I'm sorry Larry, I don't understand that response.")
 
 
-
     def splitAndAddInstructions(self, scraper):
         instructions = scraper.instructions()
         instructions = instructions.replace("\n", "")
@@ -183,4 +182,4 @@ class Runner():
             self.recipe.addInstruction(Instruction(sent.text))
 
 if __name__ == '__main__':
-    Runner(voice=False)
+    Runner(voice=True)
