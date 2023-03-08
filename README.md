@@ -37,6 +37,9 @@ That will let you choose between providing a recipe or searching for one. If you
 - [X] Ingredient substitution questions ("What can I substitute for <ingredient>?");
 - [X] Name your bot :) - Recipe ranger
 
+## Tasks
+We made our chat bot voice to text so you can interact with it. This video can be viewed from the google folder linked in the canvas comment.
+
 ---
 ## Authors
 By Spencer Rothfleisch, Gabe Bider, Eli Barlow and Isaac Miller
