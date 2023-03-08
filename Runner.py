@@ -8,6 +8,7 @@ from navigation import isAllIngredients, isNavigation, doNavigation, isAllSteps
 from question import isGeneralQuestion, questionParser
 from voiceToTextProofOfConcept import listener, reader
 import pyttsx3
+from recipeMutations import mutationType
 
 class Runner():
     def __init__(self, link=None, voice=False):
@@ -36,6 +37,9 @@ class Runner():
         else:
             self.recipe.printIngredients(False)
         print()
+
+        # Option to mutate the recipe
+        self.recipeAltering(voice, engine)
 
         # Option to see all steps or just the first step
         self.allOrFirstStep(voice, engine)
@@ -168,8 +172,26 @@ class Runner():
                 else:
                     print("I'm sorry Larry, I don't understand that response.")
 
+    # Determines if there will be a recipe mutation, and if there is, it calls the mutationType file
+    def recipeAltering(self, voice, engine):
+        if voice:
+            reader("Would you like to alter the recipe?", engine=engine)
+            mutateRecipe, confidence = listener()
+        else:
+            mutateRecipe = input("Would you like to alter the recipe?")
+        
+        # Chekcs if the user wants to edit the recipe
+        mutateRecipeRegex = r'\b(yes|yeah|sure|ok(?:ay)?|transform|mutate|change)\b'
+        if re.search(mutateRecipeRegex, mutateRecipe.lower().strip()):
+            if voice:
+                reader("Great! How would you like to alter the recipe?", engine=engine)
+                mutation, confidence = listener()
+            else:
+                mutation = input("Great! How would you like to alter the recipe?")
+            self.recipe.replaceIngredientsList(mutationType(mutation.lower().strip(), self.recipe.getIngredientsList(), engine))
+        pass
 
-
+    # Splits and adds instructions
     def splitAndAddInstructions(self, scraper):
         instructions = scraper.instructions()
         instructions = instructions.replace("\n", "")

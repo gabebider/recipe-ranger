@@ -111,6 +111,7 @@ env.bak/
 venv.bak/
 Scripts/
 pyvenv.cfg
+recipe_ranger_venv
 
 # Spyder project settings
 .spyderproject

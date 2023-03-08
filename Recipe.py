@@ -10,6 +10,12 @@ class Recipe():
         self.url = url
         self.ingredients: list[Ingredient] = ingredients
         self.instructions = instructions
+
+    def replaceIngredientsList(self, ingredientList):
+        self.ingredients = ingredientList
+
+    def getIngredientsList(self):
+        return self.ingredients
     
     def addIngredient(self, ingredient):
         self.ingredients[ingredient.name] = ingredient
