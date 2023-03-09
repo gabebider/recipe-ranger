@@ -46,6 +46,23 @@ def miniRunner(s):
     ParseDependency(s)
     # from Instruction import Instruction
     # Instruction(s)
+
+def runMultiple(arr):
+    for s in arr:
+        miniRunner(s)
+
+orzo_ingredients = ["uncooked orzo pasta",
+                    "pitted green olives",
+                    "diced feta cheese",
+                    "chopped fresh parsley",
+                    "chopped fresh dill",
+                    "ripe tomato, chopped",
+                    "virgin olive oil",
+                    "lemon juice",
+                    "salt and pepper to taste"]
     
 if __name__ == '__main__':
-    miniRunner("locking tongs")
+    runMultiple(orzo_ingredients)
+
+# TODO: modify parsing code so that it will read something like "salt and pepper to taste" as two separate ingredients
+# -- "salt to taste" and "pepper to taste"

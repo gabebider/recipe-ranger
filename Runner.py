@@ -205,4 +205,4 @@ class Runner():
             self.recipe.addInstruction(Instruction(sent.text))
 
 if __name__ == '__main__':
-    Runner(voice=True)
+    Runner(voice=False)
