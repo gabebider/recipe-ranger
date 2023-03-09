@@ -3,21 +3,19 @@ from utils import get_subtree_text
 from Parse import Parse
 import re
 class Instruction:
-    def __init__(self,text):
+    def __init__(self,text:str, nlp:spacy.language.Language):
+        assert isinstance(text, str), "Instruction text must be a string"
+        assert isinstance(nlp, spacy.language.Language), "nlp must be a spacy language object"
+        
         self.text = text
+        self.nlp = nlp
         self.parse_text()
-        #! remove this: printing for debugging
-        # for parse in self.parses:
-        #     print("Parse: ")
-        #     print(self.parses[parse])
-        #     print()
 
     def __str__(self):
         return self.text
     
     def parse_text(self):
-        nlp = spacy.load("en_core_web_trf")
-        doc = nlp(self.text)
+        doc = self.nlp(self.text)
         root = list(doc.sents)[0].root
         action_verbs = [root]
         

@@ -3,13 +3,19 @@ from bs4 import BeautifulSoup
 from Ingredient import Ingredient
 from recipe_scrapers import scrape_me
 import re
+from utils import merge_compound_and_proper_nouns
+import spacy
 from Instruction import Instruction
 
 class Recipe():
-    def __init__(self, url, ingredients = {}, instructions = []):
+    def __init__(self, url: str, nlp: spacy.language.Language):
+        assert isinstance(url, str), "url must be a string"
+        assert isinstance(nlp, spacy.language.Language), "nlp must be a spacy language object"
+
         self.url = url
-        self.ingredients: list[Ingredient] = ingredients
-        self.instructions = instructions
+        self.ingredients = {}
+        self.instructions = []
+        self.nlp = nlp
 
     def replaceIngredientsList(self, ingredientList):
         self.ingredients = ingredientList
@@ -30,7 +36,7 @@ class Recipe():
 
         for ingredient in ingredients_list:
             sections = ingredient.find_all("span")
-            newIngredient = Ingredient()
+            newIngredient = Ingredient("", "", "", self.nlp)
             for section in sections:
                 if 'data-ingredient-quantity' in section.attrs:
                     newIngredient.setQuantity(section.text.strip())
@@ -41,8 +47,7 @@ class Recipe():
 
             self.addIngredient(newIngredient)
     
-    def parseForIngredients(self):
-        scraper = scrape_me(self.url)
+    def parseForIngredients(self,scraper):
         ingList = scraper.ingredients()
 
         # Define regular expressions for amount and unit
@@ -90,7 +95,7 @@ class Recipe():
                 if name.startswith('.'):
                     name = name[1:].strip()
             # Adds ingredient to ingredients list
-            self.addIngredient(Ingredient(name, amount, unit))
+            self.addIngredient(Ingredient(name, amount, unit, self.nlp))
         pass
     
     def printIngredients(self,printBreakdown=False):

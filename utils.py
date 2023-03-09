@@ -22,6 +22,45 @@ def merge_compound_and_proper_nouns(doc):
 
     return doc
 
+
+def parseIngredientCore(ingredientName:str, nlp:spacy.language.Language):
+    """
+    Parses the ingredient name and returns the core ingredient and modifiers, in the form of a dictionary.
+
+    Parameters:
+        ingredientName (str): The ingredient name to be parsed.
+
+    Returns:
+        dict: A dictionary containing the core ingredient and modifiers.
+    """
+    assert isinstance(ingredientName, str), "Ingredient name must be a string"
+    assert isinstance(nlp, spacy.language.Language), "nlp must be a spacy language object"
+
+    # TODO: make these more efficient --> somehow pass around doc or span objects instead of re-parsing every time
+    doc = nlp(ingredientName)
+
+    # TODO: test this with temperature and time -- right now just returns the first noun
+    np = list(doc.noun_chunks)[0]
+    core = None
+    for token in np:
+        # print(token.text,token.pos_)
+        if token.pos_ in ["PROPN","NOUN"]:
+            core = token
+            break
+
+    if core == None:
+        print("getMainIngredientBody: No noun found in ingredient name, returning None")
+        return None  
+        
+    mods = []
+    for child in core.children:
+        if child.dep_ in ["amod","appos"]:
+            mods.append(get_subtree_text(child))
+            #! temp debug
+            print(child.text,child.dep_,child.pos_,child.tag_)
+    
+    return {"core":core.text,"mods":mods}
+
 def get_subtree_text(token):
     """
     Return the text of the subtree rooted at the given token.

@@ -9,6 +9,8 @@ from question import isGeneralQuestion, questionParser
 from voiceToTextProofOfConcept import listener, reader
 import pyttsx3
 from recipeMutations import mutationType
+import datetime as dt
+from pprint import pprint
 
 class Runner():
     def __init__(self, link=None, voice=False):
@@ -20,16 +22,21 @@ class Runner():
         else:
             print(f"Using provided link: {link}")
 
+        nlp = spacy.load("en_core_web_trf")
+        nlp.add_pipe("merge_compound_and_proper_nouns")
         # initialize the recipe object, and get from URL or parse depending on website source
-        self.recipe = Recipe(url=link)
+        self.recipe = Recipe(url=link,nlp=nlp)
+
+        # Scrape the recipe page using recipe_scrapers
+        scraper = scrape_me(link)
+
         if re.search(r'allrecipes.com', link):
             self.recipe.getIngredientsFromUrl()
         else:
-            self.recipe.parseForIngredients()
+            self.recipe.parseForIngredients(scraper=scraper)
         
-        # Scrape the recipe page using recipe_scrapers
-        scraper = scrape_me(link)
-        self.splitAndAddInstructions(scraper)
+
+        self.splitAndAddInstructions(scraper,nlp=nlp)
 
         # Print Ingredients
         if voice:
@@ -192,17 +199,18 @@ class Runner():
         pass
 
     # Splits and adds instructions
-    def splitAndAddInstructions(self, scraper):
+    def splitAndAddInstructions(self, scraper, nlp):
         instructions = scraper.instructions()
         instructions = instructions.replace("\n", "")
         instructions = re.sub(r"(?<![0-9])\.(?![0-9])",". ",instructions)
         instructions = instructions.replace("; ", ". ")
 
-        nlp = spacy.load('en_core_web_sm')
-        doc = nlp(instructions)
-        for sent in doc.sents:
-            assert sent != None, "Sentence is None"
-            self.recipe.addInstruction(Instruction(sent.text))
+        instructions = instructions.split(". ")
+
+        instructions = [instruction.strip() + "." for instruction in instructions if instruction.strip() != ""]
+
+        for instruction in instructions:
+            self.recipe.addInstruction(Instruction(instruction,nlp))
 
 if __name__ == '__main__':
     Runner(voice=False)
