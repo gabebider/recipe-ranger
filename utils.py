@@ -33,8 +33,8 @@ def ParseDependency(s):
     Create a dependency parse for the given string and display it in a browser window.
     """
     nlp = spacy.load("en_core_web_trf")
-    # nlp.add_pipe("merge_compound_and_proper_nouns")
-    nlp.add_pipe("merge_noun_chunks")
+    nlp.add_pipe("merge_compound_and_proper_nouns")
+    # nlp.add_pipe("merge_noun_chunks")
     doc = nlp(s)
     html = displacy.render(doc, style="dep",options={"dep":True})
     with open("parse2.html", "w", encoding="utf-8") as f:
@@ -42,19 +42,10 @@ def ParseDependency(s):
     subprocess.run(["open", "parse2.html"], check=True)
 
 def miniRunner(s):
-    print(s)
-    # ParseDependency(s)
-    from Instruction import Instruction
-    Instruction(s)
+    # print(s)
+    ParseDependency(s)
+    # from Instruction import Instruction
+    # Instruction(s)
     
 if __name__ == '__main__':
-    # miniRunner("Bring a large pot of lightly salted water to a boil")
-    # miniRunner("Cook orzo until al dente, 8 to 10 minutes.")
-    # miniRunner("Drain and rinse with cold water.")
-    # miniRunner("When orzo is cool, transfer to a medium bowl and mix in olives, feta cheese, parsley, dill, and tomato.")
-    # miniRunner("Whisk together oil and lemon juice in a small bowl.")
-    # miniRunner("Pour over orzo mixture.")
-    # miniRunner("mix well.")
-    # miniRunner("Season with salt and pepper.")
-    # miniRunner("chill before serving.")
-    miniRunner("Preheat the oven to 375 degrees F (190 degrees C).")
+    miniRunner("locking tongs")
