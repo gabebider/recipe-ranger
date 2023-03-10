@@ -44,7 +44,7 @@ class Runner():
         if voice:
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
         else:
-            self.recipe.printIngredients(True)
+            self.recipe.printIngredients(False)
         print()
 
         # Option to mutate the recipe
@@ -77,7 +77,7 @@ class Runner():
                 link = input("Please provide the link to the recipe: ").strip()
                 methodSelection = True
             else:
-                recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one?").lower().strip()
+                recipeMethod = input("I'm sorry, I don't understand that response. Would you like to search for a recipe or provide your own link to one? ").lower().strip()
         return link
     
     # Determines whether or not to show all steps
@@ -187,17 +187,25 @@ class Runner():
             reader("Would you like to alter the recipe?", engine=engine)
             mutateRecipe, confidence = listener()
         else:
-            mutateRecipe = input("Would you like to alter the recipe?")
+            mutateRecipe = input("Would you like to alter the recipe? ")
         
         # Chekcs if the user wants to edit the recipe
         mutateRecipeRegex = r'\b(yes|yeah|sure|ok(?:ay)?|transform|mutate|change)\b'
         if re.search(mutateRecipeRegex, mutateRecipe.lower().strip()):
             if voice:
-                reader("Great! How would you like to alter the recipe?", engine=engine)
+                reader("\nGreat! How would you like to alter the recipe?", engine=engine)
                 mutation, confidence = listener()
             else:
-                mutation = input("Great! How would you like to alter the recipe?")
-            self.recipe.replaceIngredientsList(mutationType(mutation.lower().strip(), self.recipe.getIngredientsList(), engine))
+                mutation = input("\nGreat! How would you like to alter the recipe? ")
+            self.recipe.replaceIngredientsList(mutationType(mutation.lower().strip(), self.recipe.getIngredientsList(), voice, engine))
+        
+        # read new recipe
+        if voice:
+            reader("\nYour updated ingredients list is:\n", engine=engine)
+            reader(self.recipe.getIngredientsListAsString(), engine=engine)
+        else:
+            print("\nYour updated ingredients list is:\n")
+            self.recipe.printIngredients(False)
         pass
 
     # Splits and adds instructions
