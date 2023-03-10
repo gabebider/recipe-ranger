@@ -9,7 +9,7 @@ class Ingredient():
         assert isinstance(unit, str), "Ingredient unit must be a string"
         assert isinstance(nlp, spacy.language.Language), "nlp must be a spacy language object"
 
-        self.name = name
+        self.name = name.replace("(Optional)","").strip()
         self.quantity = quantity
         self.unit = unit
         self.nlp = nlp
@@ -17,10 +17,12 @@ class Ingredient():
         try:
             d = parseIngredientCore(self.name,self.nlp)
             self.core = d["core"]
-            self.mods = d["mods"]
+            self.descriptors = d["descriptors"]
+            self.preparations = d["preparations"]
         except:
             self.core = None
-            self.mods = None
+            self.descriptors = []
+            self.preparations = []
     
     def __str__(self):
         if self.quantity == None and self.unit == None:
@@ -33,10 +35,11 @@ class Ingredient():
             return f"{self.quantity} {self.unit} {self.name}"
 
     def setName(self, name):
-        self.name = name
+        self.name = name.replace("(Optional)","").strip()
         d = parseIngredientCore(self.name,self.nlp)
         self.core = d["core"]
-        self.mods = d["mods"]
+        self.descriptors = d["descriptors"]
+        self.preparations = d["preparations"]
 
     def setQuantity(self, quantity):
         self.quantity = quantity
@@ -45,5 +48,5 @@ class Ingredient():
         self.unit = unit
 
     def getBreakdown(self):
-        return f"{str(self)}\n    Quantity: {self.quantity}\n    Unit: {self.unit}\n    Name: {self.name}\n    Core: {self.core}"
+        return f"{str(self)}\n    Quantity: {self.quantity}\n    Unit: {self.unit}\n    Name: {self.name}\n    Core: {self.core}\n    Descriptors: {self.descriptors}\n    Preparations: {self.preparations}\n"
         

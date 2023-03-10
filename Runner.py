@@ -4,6 +4,7 @@ from Recipe import Recipe
 import spacy
 from RecipeFinder import RecipeFinder
 import re
+from utils import merge_compound_and_proper_nouns, merge_hyphenated_tokens
 from navigation import isAllIngredients, isNavigation, doNavigation, isAllSteps
 from question import isGeneralQuestion, questionParser
 from voiceToTextProofOfConcept import listener, reader
@@ -23,6 +24,7 @@ class Runner():
             print(f"Using provided link: {link}")
 
         nlp = spacy.load("en_core_web_trf")
+        nlp.add_pipe("merge_hyphenated_tokens")
         nlp.add_pipe("merge_compound_and_proper_nouns")
         # initialize the recipe object, and get from URL or parse depending on website source
         self.recipe = Recipe(url=link,nlp=nlp)
@@ -42,7 +44,7 @@ class Runner():
         if voice:
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
         else:
-            self.recipe.printIngredients(False)
+            self.recipe.printIngredients(True)
         print()
 
         # Option to mutate the recipe
