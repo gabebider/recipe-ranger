@@ -18,6 +18,8 @@ class Recipe():
         self.nlp = nlp
 
     def replaceIngredientsListAndInstructionsList(self, ingredientAndStepList):
+        assert isinstance(ingredientAndStepList, list), "ingredientAndStepList must be a list"
+        assert len(ingredientAndStepList) == 2, "ingredientAndStepList must be a list of length 2"
         self.ingredients = ingredientAndStepList[0]
         self.instructions = ingredientAndStepList[1]
 

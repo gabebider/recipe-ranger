@@ -12,16 +12,30 @@ import pyttsx3
 from recipeMutations import mutationType
 import datetime as dt
 from pprint import pprint
-
+import sys
+import traceback
 class Runner():
     def __init__(self, link=None, voice=False):
         # if the user wants to use voice then initialize the text-to-speech engine
         engine = pyttsx3.init()
+
+
+        # class TracePrints(object):
+        #     def __init__(self):    
+        #         self.stdout = sys.stdout
+        #     def write(self, s):
+        #         self.stdout.write("Writing %r\n" % s)
+        #         traceback.print_stack(file=self.stdout)
+
+        # sys.stdout = TracePrints()
+
         # Get recipe either from url or from recipe search
         if link == None:
             link = self.getRecipeLink()
         else:
             print(f"Using provided link: {link}")
+
+        
 
         nlp = spacy.load("en_core_web_trf")
         nlp.add_pipe("merge_hyphenated_tokens")
@@ -204,7 +218,7 @@ class Runner():
             reader("\nYour updated ingredients list is:", engine=engine)
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
         else:
-            print("\nYour updated ingredients list is:")
+            # print("\nYour updated ingredients list is:")
             self.recipe.printIngredients(False)
         pass
 
@@ -223,4 +237,6 @@ class Runner():
             self.recipe.addInstruction(Instruction(instruction,nlp))
 
 if __name__ == '__main__':
-    Runner(voice=False)
+    # Runner(voice=False)
+    friedRiceLink = "https://www.allrecipes.com/recipe/16954/chinese-chicken-fried-rice-ii/"
+    Runner(link=friedRiceLink, voice=False)

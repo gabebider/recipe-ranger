@@ -29,7 +29,7 @@ def merge_hyphenated_tokens(doc):
     """
     with doc.retokenize() as retokenizer:
         for token in doc[1:-1]:
-            print(token.text)
+            # print(token.text)
             if token.text.endswith('-') and doc[token.i+1].text and doc[token.i-1].text:
                 retokenizer.merge(doc[token.i-1:token.i+2])
     return doc
