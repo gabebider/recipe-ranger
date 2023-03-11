@@ -237,6 +237,6 @@ class Runner():
             self.recipe.addInstruction(Instruction(instruction,nlp))
 
 if __name__ == '__main__':
-    # Runner(voice=False)
-    friedRiceLink = "https://www.allrecipes.com/recipe/16954/chinese-chicken-fried-rice-ii/"
-    Runner(link=friedRiceLink, voice=False)
+    Runner(voice=False)
+    # friedRiceLink = "https://www.allrecipes.com/recipe/16954/chinese-chicken-fried-rice-ii/"
+    # Runner(link=friedRiceLink, voice=False)
