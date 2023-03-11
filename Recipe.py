@@ -17,11 +17,15 @@ class Recipe():
         self.instructions = []
         self.nlp = nlp
 
-    def replaceIngredientsList(self, ingredientList):
-        self.ingredients = ingredientList
+    def replaceIngredientsListAndInstructionsList(self, ingredientAndStepList):
+        self.ingredients = ingredientAndStepList[0]
+        self.instructions = ingredientAndStepList[1]
 
     def getIngredientsList(self):
         return self.ingredients
+    
+    def getInstructionsList(self):
+        return self.instructions
     
     def addIngredient(self, ingredient):
         self.ingredients[ingredient.name] = ingredient

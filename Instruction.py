@@ -14,6 +14,13 @@ class Instruction:
     def __str__(self):
         return self.text
     
+    def set_text(self, newText):
+        self.text = newText
+        self.parse_text()
+
+    def get_text(self):
+        return self.text
+    
     def parse_text(self):
         doc = self.nlp(self.text)
         root = list(doc.sents)[0].root

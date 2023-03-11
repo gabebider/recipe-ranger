@@ -65,7 +65,7 @@ class Runner():
     # Gets the recipe link from one of two methods
     def getRecipeLink(self):
         # Chose recipe method
-        recipeMethod = input("Would you like to search for a recipe or provide your own link to one?: ").lower().strip()
+        recipeMethod = input("\nWould you like to search for a recipe or provide your own link to one?: ").lower().strip()
         regexSearch = r'\b(search|look( up)?|google|find|first|former)\b'
         regexProvide = r'\b(link|provide|second|own|latter)\b'
         methodSelection = False
@@ -197,14 +197,14 @@ class Runner():
                 mutation, confidence = listener()
             else:
                 mutation = input("\nGreat! How would you like to alter the recipe? ")
-            self.recipe.replaceIngredientsList(mutationType(mutation.lower().strip(), self.recipe.getIngredientsList(), voice, engine))
+            self.recipe.replaceIngredientsListAndInstructionsList(mutationType(mutation.lower().strip(), self.recipe.getIngredientsList(), self.recipe.getInstructionsList(), voice, engine))
         
         # read new recipe
         if voice:
-            reader("\nYour updated ingredients list is:\n", engine=engine)
+            reader("\nYour updated ingredients list is:", engine=engine)
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
         else:
-            print("\nYour updated ingredients list is:\n")
+            print("\nYour updated ingredients list is:")
             self.recipe.printIngredients(False)
         pass
 
