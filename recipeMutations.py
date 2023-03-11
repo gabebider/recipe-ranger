@@ -18,7 +18,9 @@ def mutationType(input, ingredientsList, instructionsList, voice, engine):
     (r'\b(make it vegetarian|to vegetarian|to veg|remove meat)\b', "\nConverting to vegetarian!", toVegetarian),
     (r'\b(from vegitarian|from veg|add meat)\b', "\nConverting from vegitarian!", fromVegetarian),
     (r'\b(make healthy|to healthy|better for you|better for me)\b', "\nConverting to healthy!", toHealthy),
-    (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy)\b', "\nConverting to unhealthy!", fromHealthy)
+    (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy)\b', "\nConverting to unhealthy!", fromHealthy),
+    (r'\b(gluten[ -]free|to gluten[ -]free)\b', "\nConverting to gluten-free!", toGlutenFree),
+    (r'\b(lactose)\b', "\nConverting to lactose-free!", toLactoseFree)
     ]
 
     newInstructionsList = instructionsList
@@ -146,10 +148,25 @@ def changeCookingMethod(ingList, instList, voice, engine):
     pass
 
 def toGlutenFree(ingList, instList, voice, engine):
-    pass
+    gluten_ingredients = {'wheat flour': 'almond flour','barley': 'quinoa','rye': 'oats','bread crumbs': 'gluten-free bread crumbs','pasta': 'gluten-free pasta','soy sauce': 'tamari sauce','malt vinegar': 'apple cider vinegar','beer': 'gluten-free beer','breading mix': 'gluten-free breading mix','crackers': 'gluten-free crackers','cereal': 'gluten-free cereal','pretzels': 'gluten-free pretzels','wheat germ': 'quinoa flakes','flour': 'almond flour','bread': 'gluten-free bread','croutons': 'gluten-free croutons','couscous': 'quinoa','faroe': 'quinoa','matzo': 'gluten-free matzo','muesli': 'gluten-free muesli',
+                          'noodles': 'gluten-free noodles','pancake mix': 'gluten-free pancake mix','pita bread': 'gluten-free pita bread','pizza crust': 'gluten-free pizza crust','popcorn': 'gluten-free popcorn','pretzel sticks': 'gluten-free pretzel sticks','sourdough bread': 'gluten-free sourdough bread','tortillas': 'gluten-free tortillas','waffle mix': 'gluten-free waffle mix'}
+
+    # update ingredients
+    ingList = replaceIngredient(ingList, gluten_ingredients, voice, engine)
+
+    # Update instructions
+    newInstructionList = replaceInstruction(instList, gluten_ingredients, voice, engine)
+    return ingList, newInstructionList
 
 def toLactoseFree(ingList, instList, voice, engine):
-    pass
+    lactose_ingredients = {'milk': 'almond milk','butter': 'coconut oil','cheese': 'nutritional yeast','yogurt': 'coconut yogurt','cream': 'coconut cream','ice cream': 'coconut milk ice cream','whey protein': 'pea protein','condensed milk': 'coconut milk','evaporated milk': 'coconut milk','buttermilk': 'soy milk','cream cheese': 'vegan cream cheese','sour cream': 'coconut cream','powdered milk': 'coconut milk powder','whipped cream': 'coconut whipped cream','half and half': 'coconut milk','cottage cheese': 'tofu','ricotta cheese': 'tofu','feta cheese': 'vegan feta cheese','mascarpone cheese': 'vegan mascarpone cheese',}
+
+    # update ingredients
+    ingList = replaceIngredient(ingList, lactose_ingredients, voice, engine)
+
+    # Update instructions
+    newInstructionList = replaceInstruction(instList, lactose_ingredients, voice, engine)
+    return ingList, newInstructionList
 
 def replaceIngredient(ingredientList, substituteDict, voice, engine):
     '''
@@ -189,3 +206,4 @@ def replaceInstruction(instructionList, substituteDict, voice, engine):
 
 def invertDict(d):
     return dict((v,k) for k in d for v in d[k])
+
