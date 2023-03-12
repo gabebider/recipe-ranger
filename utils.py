@@ -23,6 +23,21 @@ def merge_compound_and_proper_nouns(doc):
 
     return doc
 
+def reduce_set(s):
+    """
+    Removes elements from a set that are substrings of other elements in the set.
+    """
+    reduced_set = set()
+    for elem in s:
+        is_substring = False
+        for other_elem in s:
+            if elem != other_elem and elem in other_elem:
+                is_substring = True
+                break
+        if not is_substring:
+            reduced_set.add(elem)
+    return reduced_set
+
 @Language.component("merge_hyphenated_tokens")
 def merge_hyphenated_tokens(doc):
     """
@@ -99,6 +114,48 @@ def get_subtree_text(token):
     """
     return ' '.join([t.text for t in token.subtree])
 
+def get_obj_text(token):
+    """
+    Return the text of the token with amods and advmods attached
+    """
+    trim_subtree(token)
+    if token._.trimmed_subtree == None:
+        return token.text
+    return ' '.join([t.text for t in token._.trimmed_subtree if t.dep_ in ["amod","advmod","dobj","pobj","nsubj","conj"]])
+
+def trim_subtree(token):
+    """
+    Trims the subtree of a token so that it does not include tokens connected by a conjunction.
+    """
+    children = list(token.children)
+    for child in children:
+        if child.dep_ in ["conj","cc","ccomp","prep"]:
+            return
+        trim_subtree(child)
+    # subtree = [t for t in token.subtree if not (t.i < token.i and t.i > child.i)]
+    conj_children = [t for t in token.subtree if t.dep_ == "conj"]
+    def in_subtree(token):
+        return token in [child for child in conj_children]
+    
+    subtree = [t for t in token.subtree if not any(in_subtree(child) for child in t.children)]
+    token._.trimmed_subtree = subtree
+
+def get_conjuncts(tokens, processed=None):
+    """
+    Recursively adds all objects connected to another object by the dependency relation "conj" into a list.
+    """
+    if processed is None:
+        processed = set()
+    conjuncts = []
+    conj_set = set(conjuncts)
+    for token in tokens:
+        if token not in processed:
+            processed.add(token)
+            conjuncts += [t for t in token.subtree if t.dep_ == "conj"]
+    if conjuncts:
+        conjuncts += get_conjuncts(conjuncts, processed=processed)
+    return tokens + conjuncts
+
 def ParseDependency(s):
     """
     Create a dependency parse for the given string and display it in a browser window.
@@ -161,7 +218,6 @@ def add_to_tools(list_of_tools):
         for tool in tool_set:
             f.write(tool.strip() + "\n")
 
-            
 if __name__ == '__main__':
     # runMultiple(orzo_instructions)
     add_to_tools(["pot", "wok", "saucepan", "knife", "cutting board", "spoon", "fork", "plate", "bowl", "cup", "mug", "blender", "toaster", "microwave", "oven", "mixing bowl", "measuring cup", "colander", "strainer", "grater", "peeler", "tongs", "ladle", "whisk", "rolling pin", "can opener", "bottle opener", "corkscrew", "dish rack", "dish soap", "sponge"]

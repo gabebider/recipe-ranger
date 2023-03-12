@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from Ingredient import Ingredient
 from recipe_scrapers import scrape_me
 import re
-from utils import merge_compound_and_proper_nouns
+from utils import get_obj_text, get_conjuncts, parseIngredientCore, reduce_set
 import spacy
 from Instruction import Instruction
 
@@ -174,4 +174,38 @@ class Recipe():
     def getInstructionObject(self, step: int) -> Instruction:
         # return the instruction at the given step
         return self.instructions[step-1]
+    
+    #! this is just a test function -=-Eli
+    def write_objects_to_file(self):
+        tools = set()
+        with open('tools.txt','r') as f:
+            for line in f:
+                tools.add(line.strip())
+        
+        def in_tools(token):
+            core = parseIngredientCore(token.text,self.nlp)
+            core = core['core']
+            return core in tools
+        
+        with open('recipe_objects.txt','w') as f:
+            objs = []
+            for instruction in self.instructions:
+                doc = self.nlp(instruction.text)
+                for token in doc:
+                    if token.dep_ in ["dobj","pobj"]:
+                        objs.append(token)
+            objs = get_conjuncts(objs)
+            objs = list(set(obj for obj in objs if (obj and obj.text != "")))
+            objs = [obj for obj in objs if in_tools(obj)]
+
+            tools_used_set = set()
+            for token in objs:
+                tools_used_set.add(get_obj_text(token))
+                
+            tools_used_set = reduce_set(tools_used_set)
+            for tool in tools_used_set:
+                f.write(tool + "\n")
+
+
+            
     

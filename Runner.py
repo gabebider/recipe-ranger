@@ -2,6 +2,7 @@ from recipe_scrapers import scrape_me
 from Instruction import Instruction
 from Recipe import Recipe
 import spacy
+from spacy.tokens import Token
 from RecipeFinder import RecipeFinder
 import re
 from utils import merge_compound_and_proper_nouns, merge_hyphenated_tokens
@@ -44,9 +45,12 @@ class Runner():
         else:
             print(f"Using provided link: {link}")  
 
+        Token.set_extension("trimmed_subtree", default=None, force=True)
         nlp = spacy.load("en_core_web_trf")
+        # nlp.add_pipe("set_trimmed_subtree")
         nlp.add_pipe("merge_hyphenated_tokens")
         nlp.add_pipe("merge_compound_and_proper_nouns")
+        
         # initialize the recipe object, and get from URL or parse depending on website source
         self.recipe = Recipe(url=link,nlp=nlp)
 
@@ -59,6 +63,7 @@ class Runner():
             self.recipe.parseForIngredients(scraper=scraper)
 
         self.splitAndAddInstructions(scraper,nlp=nlp)
+        self.recipe.write_objects_to_file()
 
         # Print Ingredients
         print("\n***********************************\n")
