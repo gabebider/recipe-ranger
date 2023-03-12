@@ -155,14 +155,14 @@ class Recipe():
         # print the instruction at the given step
         # capitalize the first letter of the instruction
         instruction = self.instructions[step-1]
-        instruction = instruction.text[0].upper() + instruction.text[1:]
-        print(f"Step {step}: {instruction}")
+        tempInstruction = instruction.text[0].upper() + instruction.text[1:]
+        print(f"Step {step}: {tempInstruction}")
 
     def getInstruction(self, step: int) -> None:
         # print the instruction at the given step
         instruction = self.instructions[step-1]
-        instruction = instruction.text[0].upper() + instruction.text[1:]
-        return f"Step {step}: {instruction}"
+        tempInstruction = instruction.text[0].upper() + instruction.text[1:]
+        return f"Step {step}: {tempInstruction}"
 
     def printRecipe(self, printBreakdownIng=False):
         self.printIngredients(printBreakdownIng)
