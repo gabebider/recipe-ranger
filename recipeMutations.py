@@ -17,8 +17,8 @@ def mutationType(input, ingredientsList, instructionsList, voice, engine):
     (r'\b(divide|cut|half)\b', "\nHalving recipe!", halfRecipe),
     (r'\b(make it vegetarian|to vegetarian|to veg|remove meat)\b', "\nConverting to vegetarian!", toVegetarian),
     (r'\b(from vegetarian|from veg|add meat)\b', "\nConverting from vegetarian!", fromVegetarian),
-    (r'\b(make healthy|to healthy|better for you|better for me)\b', "\nConverting to healthy!", toHealthy),
-    (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy)\b', "\nConverting to unhealthy!", fromHealthy),
+    (r'\b(make healthy|to healthy|better for you|better for me|make it healthy| healthier)\b', "\nConverting to healthy!", toHealthy),
+    (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy|make it unhealthy|less healthy)\b', "\nConverting to unhealthy!", fromHealthy),
     (r'\b(gluten[ -]free|to gluten[ -]free)\b', "\nConverting to gluten-free!", toGlutenFree),
     (r'\b(lactose)\b', "\nConverting to lactose-free!", toLactoseFree)
     ]
@@ -82,7 +82,7 @@ def doubleRecipe(ingList, instList, voice, engine):
                     newAmount = str(newAmount * 2)
         ingredient.quantity = newAmount
         ingList[ingKey] = ingredient
-    return ingList
+    return ingList, instList
 
 def halfRecipe(ingList, instList, voice, engine):
     for ingKey in ingList:
@@ -134,7 +134,7 @@ def toHealthy(ingList, instList, voice, engine):
     return ingList, newInstructionList
 
 def fromHealthy(ingList, instList, voice, engine):
-    unhealthyToHealthy = {"butter": "olive oil","sugar": "honey","white flour": "whole wheat flour","canola oil": "avocado oil","processed cheese": "feta cheese","soda": "sparkling water","white rice": "brown rice","corn syrup": "maple syrup","cream": "greek yogurt","potato chips": "kale chips","mayonnaise": "hummus","bacon": "turkey bacon","bread crumbs": "rolled oats","salt": "herbs and spices","vegetable oil": "coconut oil","white bread": "whole grain bread","canned soup": "homemade soup","canned fruits in syrup": "fresh fruits","fruit juice": "whole fruit","refined pasta": "whole grain pasta","ice cream": "frozen yogurt","chocolate chips": "cacao nibs","margarine": "avocado","beef jerky": "beef or turkey jerky with no added preservatives","energy drinks": "green tea","instant noodles": "zucchini noodles","candies": "dried fruits","sausages": "chicken sausages","whipped cream": "coconut cream","beef": "chicken","pork": "chicken","lamb": "chicken","duck": "chicken" }
+    unhealthyToHealthy = {"butter": "olive oil","sugar": "honey","white flour": "whole wheat flour","canola oil": "avocado oil","processed cheese": "feta cheese","soda": "sparkling water","white rice": "brown rice","corn syrup": "maple syrup","cream": "greek yogurt","potato chips": "kale chips","mayonnaise": "hummus","bacon": "turkey bacon","bread crumbs": "rolled oats","salt": "herbs and spices","vegetable oil": "coconut oil","white bread": "whole grain bread","canned soup": "homemade soup","canned fruits in syrup": "fresh fruits","fruit juice": "whole fruit","refined pasta": "whole grain pasta","ice cream": "frozen yogurt","chocolate chips": "cacao nibs","margarine": "avocado","beef jerky": "beef or turkey jerky with no added preservatives","energy drinks": "green tea","instant noodles": "zucchini noodles","candies": "dried fruits","sausages": "chicken sausages","whipped cream": "coconut cream","beef": "chicken","pork": "chicken","lamb": "chicken","duck": "chicken", "pork steaks": "salmon steaks"}
     healthyToUnhealthy = invertDict(unhealthyToHealthy)
     # update ingredients
     ingList = replaceIngredient(ingList, healthyToUnhealthy, voice, engine)
