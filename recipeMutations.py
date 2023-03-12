@@ -68,7 +68,7 @@ def convertToFloat(numberString):
 def doubleRecipe(ingList, instList, voice, engine):
     for ingKey in ingList:
         ingredient = ingList[ingKey]
-        if ingredient.quantity != None:
+        if ingredient.quantity != "":
             if isinstance(ingredient.quantity, list):
                 newAmount = []
                 for ing in ingredient.quantity:
@@ -80,14 +80,14 @@ def doubleRecipe(ingList, instList, voice, engine):
                     newAmount = str(newAmount[0]) + " " + str(newAmount[1])
                 else:
                     newAmount = str(newAmount * 2)
-        ingredient.quantity = newAmount
+            ingredient.quantity = newAmount
         ingList[ingKey] = ingredient
     return ingList, instList
 
 def halfRecipe(ingList, instList, voice, engine):
     for ingKey in ingList:
         ingredient = ingList[ingKey]
-        if ingredient.quantity != None:
+        if ingredient.quantity != "":
             if isinstance(ingredient.quantity, list):
                 newAmount = []
                 for ing in ingredient.quantity:
@@ -99,7 +99,7 @@ def halfRecipe(ingList, instList, voice, engine):
                     newAmount = str(newAmount[0]) + " " + str(newAmount[1])
                 else:
                     newAmount = str(newAmount * 0.5)
-        ingredient.quantity = newAmount
+            ingredient.quantity = newAmount
         ingList[ingKey] = ingredient
     return ingList, instList
 
