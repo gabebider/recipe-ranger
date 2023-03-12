@@ -258,6 +258,20 @@ class Runner():
             self.recipe.addInstruction(Instruction(instruction,nlp))
 
 if __name__ == '__main__':
-    Runner(voice=False)
+    # Runner(voice=False)
     # friedRiceLink = "https://www.allrecipes.com/recipe/16954/chinese-chicken-fried-rice-ii/"
-    # Runner(link=friedRiceLink, voice=False)
+
+    # Required recipes
+    lasagnaLink = "https://www.allrecipes.com/recipe/24074/alysias-basic-meat-lasagna/"
+    meatlessPadThaiLink = "https://www.allrecipes.com/recipe/244716/shirataki-meatless-meat-pad-thai/"
+    beefBourguignonLink = "https://www.allrecipes.com/recipe/16167/beef-bourguignon-i/"
+    teriyakiSalmonLink = "https://www.allrecipes.com/recipe/228285/teriyaki-salmon/"
+
+    # Optional recipes
+    shrimpFriedRiceLink = "https://www.allrecipes.com/recipe/229293/korean-saewoo-bokkeumbap-shrimp-fried-rice/"
+    tiramisuCheesecakeLink = "https://www.allrecipes.com/recipe/7757/tiramisu-cheesecake/"
+    mexicanRiceLink = "https://www.allrecipes.com/recipe/73303/mexican-rice-iii/"
+
+    # One extra link - TODO 
+
+    Runner(link=None, voice=False)
