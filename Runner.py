@@ -237,12 +237,12 @@ class Runner():
         # read new recipe
         if voice and updated:
             print("\n***********************************\n")
-            reader("Your updated ingredients list is:", engine=engine)
+            reader("Your updated ingredients list is:\n", engine=engine)
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
             print("\n***********************************\n")
         elif updated:
             print("\n***********************************\n")
-            print("Your updated ingredients list is:")
+            print("Your updated ingredients list is:\n")
             self.recipe.printIngredients(False)
             print("\n***********************************\n")
         pass
