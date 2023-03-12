@@ -16,6 +16,10 @@ import sys
 import traceback
 class Runner():
     def __init__(self, link=None, voice=False):
+        print("***********************************\n")
+        print("** Welcome to the Recipe Ranger! **\n")
+        print("***********************************")
+
         # if the user wants to use voice then initialize the text-to-speech engine
         engine = pyttsx3.init()
 
@@ -33,9 +37,7 @@ class Runner():
         if link == None:
             link = self.getRecipeLink()
         else:
-            print(f"Using provided link: {link}")
-
-        
+            print(f"Using provided link: {link}")  
 
         nlp = spacy.load("en_core_web_trf")
         nlp.add_pipe("merge_hyphenated_tokens")
@@ -50,16 +52,19 @@ class Runner():
             self.recipe.getIngredientsFromUrl()
         else:
             self.recipe.parseForIngredients(scraper=scraper)
-        
 
         self.splitAndAddInstructions(scraper,nlp=nlp)
 
         # Print Ingredients
+        print("\n***********************************\n")
+        print("You will need the following ingredients:\n")
+
         if voice:
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
         else:
             self.recipe.printIngredients(False)
-        print()
+        print("\n***********************************\n")
+
 
         # Option to mutate the recipe
         self.recipeAltering(voice, engine)
@@ -205,6 +210,7 @@ class Runner():
         
         # Chekcs if the user wants to edit the recipe
         mutateRecipeRegex = r'\b(yes|yeah|sure|ok(?:ay)?|transform|mutate|change)\b'
+        updated = False
         if re.search(mutateRecipeRegex, mutateRecipe.lower().strip()):
             if voice:
                 reader("\nGreat! How would you like to alter the recipe?", engine=engine)
@@ -212,14 +218,19 @@ class Runner():
             else:
                 mutation = input("\nGreat! How would you like to alter the recipe? ")
             self.recipe.replaceIngredientsListAndInstructionsList(mutationType(mutation.lower().strip(), self.recipe.getIngredientsList(), self.recipe.getInstructionsList(), voice, engine))
-        
+            updated = True
+
         # read new recipe
-        if voice:
-            reader("\nYour updated ingredients list is:", engine=engine)
+        if voice and updated:
+            print("\n***********************************\n")
+            reader("Your updated ingredients list is:", engine=engine)
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
-        else:
-            # print("\nYour updated ingredients list is:")
+            print("\n***********************************\n")
+        elif updated:
+            print("\n***********************************\n")
+            print("Your updated ingredients list is:")
             self.recipe.printIngredients(False)
+            print("\n***********************************\n")
         pass
 
     # Splits and adds instructions

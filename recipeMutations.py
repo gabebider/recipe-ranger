@@ -65,7 +65,7 @@ def convertToFloat(numberString):
         fixedNums = fixedNums[0]
     return fixedNums
 
-def doubleRecipe(ingList):
+def doubleRecipe(ingList, instList, voice, engine):
     for ingKey in ingList:
         ingredient = ingList[ingKey]
         if ingredient.quantity != None:
@@ -84,7 +84,7 @@ def doubleRecipe(ingList):
         ingList[ingKey] = ingredient
     return ingList
 
-def halfRecipe(ingList):
+def halfRecipe(ingList, instList, voice, engine):
     for ingKey in ingList:
         ingredient = ingList[ingKey]
         if ingredient.quantity != None:
@@ -119,7 +119,7 @@ def fromVegetarian(ingList, instList, voice, engine):
     ingList = replaceIngredient(ingList, vegToMeat, voice, engine)
 
     # Update instructions
-    newInstructionList = replaceInstruction(instList, vegToMeat)
+    newInstructionList = replaceInstruction(instList, vegToMeat, voice, engine)
 
 
 def toHealthy(ingList, instList, voice, engine):

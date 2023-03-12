@@ -105,7 +105,6 @@ class Recipe():
         pass
     
     def printIngredients(self,printBreakdown=False):
-        print("\nYou will need the following ingredients:\n")
         for ingredient in self.ingredients.values():
             if printBreakdown:
                 print(ingredient.getBreakdown())
