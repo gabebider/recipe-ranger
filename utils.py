@@ -2,6 +2,7 @@ import spacy
 from spacy import displacy
 from spacy.language import Language
 import subprocess
+import os
 
 @Language.component("merge_compound_and_proper_nouns")
 def merge_compound_and_proper_nouns(doc):
@@ -82,17 +83,12 @@ def parseIngredientCore(ingredientName:str, nlp:spacy.language.Language):
                     descriptors.append(get_subtree_text(child))
             elif child.tag_ == "VBN":
                 preparations.append(get_subtree_text(child))
-            else:
-                print("getMainIngredientBody: Unhandled adjective/participle type:",child.text,child.tag_)
         elif child.tag_ == "JJ":
             if child.text[-2:] == "ed":
-                print("parseIngredientCore: adding adj to preparations without correct dependency:",child.text)
                 preparations.append(child.text)
             else:
-                print("parseIngredientCore: adding adj to descriptors without correct dependency:",child.text)
                 descriptors.append(child.text)
         elif child.tag_ == "VBN":
-            print("parseIngredientCore: adding participle to preparations without correct dependency:",child.text)
             preparations.append(child.text)
     
     return {"core":core.text,"descriptors":descriptors,"preparations":preparations}
@@ -110,15 +106,15 @@ def ParseDependency(s):
     nlp = spacy.load("en_core_web_trf")
     nlp.add_pipe("merge_hyphenated_tokens")
     nlp.add_pipe("merge_compound_and_proper_nouns")
-    # nlp.add_pipe("merge_noun_chunks")
+
     doc = nlp(s)
     html = displacy.render(doc, style="dep",options={"dep":True})
-    with open("parse2.html", "w", encoding="utf-8") as f:
+    with open("parse.html", "w", encoding="utf-8") as f:
         f.write(html)
-    subprocess.run(["open", "parse2.html"], check=True)
+    subprocess.run(["open", "parse.html"], check=True)
 
 def miniRunner(s):
-    # print(s)
+    print(s)
     ParseDependency(s)
     # from Instruction import Instruction
     # Instruction(s)
@@ -126,6 +122,7 @@ def miniRunner(s):
 def runMultiple(arr):
     for s in arr:
         miniRunner(s)
+    os.system("rm parse.html")
 
 orzo_ingredients = ["uncooked orzo pasta",
                     "pitted green olives",
@@ -137,10 +134,38 @@ orzo_ingredients = ["uncooked orzo pasta",
                     "lemon juice",
                     "salt and pepper to taste"]
 
+orzo_instructions = [
+    "Bring a large pot of lightly salted water to a boil.",
+    "Cook orzo until al dente, 8 to 10 minutes.",
+    "Drain and rinse with cold water",
+    "When orzo is cool, transfer to a medium bowl and mix in olives, feta cheese, parsley, dill, and tomato.",
+    "Whisk together oil and lemon juice in a small bowl.",
+    "Pour over orzo mixture.",
+    "mix well.",
+    "Season with salt and pepper.",
+    "chill before serving.",
+]
+
 orzo_2 = ["onion, chopped","garlic, minced","lemon, zested","lemon, sliced for garnish"]
     
+def add_to_tools(list_of_tools):
+    tool_set = set()
+
+    with open("tools.txt","r") as f:
+        tool = f.read()
+        tool_set.add(tool.strip())
+
+    tool_set |= set(list_of_tools)
+
+    with open("tools.txt","w") as f:
+        for tool in tool_set:
+            f.write(tool.strip() + "\n")
+
+            
 if __name__ == '__main__':
-    miniRunner("long-grain rice")
+    # runMultiple(orzo_instructions)
+    add_to_tools(["pot", "wok", "saucepan", "knife", "cutting board", "spoon", "fork", "plate", "bowl", "cup", "mug", "blender", "toaster", "microwave", "oven", "mixing bowl", "measuring cup", "colander", "strainer", "grater", "peeler", "tongs", "ladle", "whisk", "rolling pin", "can opener", "bottle opener", "corkscrew", "dish rack", "dish soap", "sponge"]
+)
 
 # TODO: modify parsing code so that it will read something like "salt and pepper to taste" as two separate ingredients
 # -- "salt to taste" and "pepper to taste"
