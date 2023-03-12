@@ -112,11 +112,11 @@ class Runner():
     def allOrFirstStep(self, voice, engine):
         # asks for preference
         if voice:
-            reader("Would you like to see all of the steps or just the first step? ", engine=engine)
+            reader("\nWould you like to see all of the steps or just the first step? ", engine=engine)
             showAllSteps, confidence = listener()
             showAllSteps = showAllSteps.lower().strip()
         else:
-            showAllSteps = input("Would you like to see all of the steps or just the first step? ").lower().strip()
+            showAllSteps = input("\nWould you like to see all of the steps or just the first step? ").lower().strip()
         print()
 
         # Uses regex to determine response
@@ -239,12 +239,12 @@ class Runner():
             print("\n***********************************\n")
             reader("Your updated ingredients list is:\n", engine=engine)
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
-            print("\n***********************************\n")
+            print("\n***********************************")
         elif updated:
             print("\n***********************************\n")
             print("Your updated ingredients list is:\n")
             self.recipe.printIngredients(False)
-            print("\n***********************************\n")
+            print("\n***********************************")
         pass
 
     # Splits and adds instructions

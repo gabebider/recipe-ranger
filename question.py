@@ -97,15 +97,15 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
             # determine is the question is asking about the amount
                 if is_amount_question(question):
                     ing = recipe.ingredients[ingredient_name]
-                    if ing.quantity == None:
+                    if ing.quantity == "":
                         return "No specific quantity defined for " + ing.name
-                    elif ing.unit == None:
-                        return ing.quantity
+                    elif ing.unit == "":
+                        return ing.quantity + "are needed for the whole recipe."
                     else:
                         if isinstance(ing.unit, list) and isinstance(ing.quantity, list):
-                            return f"{ing.quantity[0]} {ing.unit[0]} and/of {ing.quantity[1]} {ing.unit[1]}"
+                            return f"{ing.quantity[0].strip()} {ing.unit[0].strip()} and/of {ing.quantity[1].strip()} {ing.unit[1].strip()} are needed for the whole recipe."
                         else:
-                            return f"{ing.quantity} {ing.unit}"
+                            return f"{ing.quantity.strip()} {ing.unit.strip()} are needed for the whole recipe."
                 elif is_substitution_question(question):
                     question = question.lower().strip()
                     return google_search(question)
@@ -172,12 +172,10 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
 
 def is_all_instruction_question(question: str) -> bool:
     if ("all" in question or "the" in question) and ("instructions" in question or "steps" in question):
-        print("all instructions question")
         return True
     
 def is_all_ingredient_question(question: str) -> bool:
     if ("all" in question or "the" in question) and ("ingredients" in question or "items" in question):
-        print("all ingredients question")
         return True
     
 def is_amount_question(question: str) -> bool:
@@ -377,7 +375,7 @@ def google_search(question: str) -> str:
     question = question.replace(" ", "+")
     
 
-    url = f"https://www.google.com/search?q=how+to+{question}"
+    url = f"https://www.google.com/search?q={question}"
     return f"Great question! 😚 Here are some results that might help: {url} 🥰"
 
 
