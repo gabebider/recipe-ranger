@@ -1,4 +1,4 @@
-# Recipe Ranger
+# Recipe Ranger - Project 3
 <img src="./logo.png" width="200px">
 
 ---
@@ -38,7 +38,7 @@ That will let you choose between providing a recipe or searching for one. If you
 - [X] Name your bot :) - Recipe ranger
 
 ## Tasks
-We made our chat bot voice to text so you can interact with it. This video can be viewed from the google folder linked in the canvas comment.
+We made our chat bot voice to text so you can interact with it. This video can be viewed from the google folder linked in the canvas comment. To enable voice to text, navigate to runner.py. On line 281, change voice=False to voice=True.
 
 ---
 ## Authors
