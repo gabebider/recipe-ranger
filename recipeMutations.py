@@ -1,3 +1,4 @@
+import json
 import re
 from Recipe import Recipe
 from Ingredient import Ingredient
@@ -16,11 +17,13 @@ def mutationType(input, ingredientsList, instructionsList, voice, engine):
     (r'\b(double|times|two)\b', "\nDoubling recipe!", doubleRecipe),
     (r'\b(divide|cut|half|halve)\b', "\nHalving recipe!", halfRecipe),
     (r'\b(make it vegetarian|to vegetarian|to veg|remove meat)\b', "\nConverting to vegetarian!", toVegetarian),
-    (r'\b(from vegetarian|from veg|add meat)\b', "\nConverting from vegetarian!", fromVegetarian),
+    (r'\b(from vegetarian|from veg|add meat|non[- ]vegetarian)\b', "\nConverting from vegetarian!", fromVegetarian),
     (r'\b(make healthy|to healthy|better for you|better for me|make it healthy| healthier)\b', "\nConverting to healthy!", toHealthy),
     (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy|make it unhealthy|less healthy)\b', "\nConverting to unhealthy!", fromHealthy),
     (r'\b(gluten[ -]free|to gluten[ -]free)\b', "\nConverting to gluten-free!", toGlutenFree),
-    (r'\b(lactose)\b', "\nConverting to lactose-free!", toLactoseFree)
+    (r'\b(lactose)\b', "\nConverting to lactose-free!", toLactoseFree),
+    (r'\b(mexican|to mexican)\b', "\nConverting to Mexican!", toMexican),
+    (r'\b(indian|to indian)\b', "\nConverting to Indian!", toIndian),
     ]
 
     newInstructionsList = instructionsList
@@ -143,6 +146,65 @@ def fromHealthy(ingList, instList, voice, engine):
     newInstructionList = replaceInstruction(instList, healthyToUnhealthy, voice, engine)
     return ingList, newInstructionList
 
+def toMexican(ingList, instList, voice, engine):
+    # Go through all ingredients from proteinsAndSpices.json
+    # See if any of the ingredients from the json are in the recipe
+    # If they are, and the cuisine is not already Mexican, change it to another item of the same type from the json
+    replaceDict = {}
+    with open('proteinsAndSpices.json') as f:
+        data = json.load(f)
+        f.close()
+    for ingredient in ingList:
+        hasFound = False
+        for item in data.keys():
+            if hasFound:
+                break
+            if item in ingredient:
+                # If the ingredient is already mexican, don't change it
+                typeToReplace = data[item]['type']
+                if data[item]['cuisine'] != 'mexican':
+                    for foodName in data.keys():
+                        if data[foodName]['type'] == typeToReplace and data[foodName]['cuisine'] == 'mexican':
+                            replaceDict[item] = foodName
+                            hasFound = True
+                            break
+
+    # update ingredients
+    ingList = replaceSingleName(ingList, replaceDict, voice, engine)
+
+    # Update instructions
+    newInstructionList = replaceInstruction(instList, replaceDict, voice, engine)
+
+    return ingList, newInstructionList
+
+def toIndian(ingList, instList, voice, engine):
+    replaceDict = {}
+    with open('proteinsAndSpices.json') as f:
+        data = json.load(f)
+        f.close()
+    for ingredient in ingList:
+        hasFound = False
+        for item in data.keys():
+            if hasFound:
+                break
+            if item in ingredient:
+                # If the ingredient is already mexican, don't change it
+                typeToReplace = data[item]['type']
+                if data[item]['cuisine'] != 'indian':
+                    for foodName in data.keys():
+                        if data[foodName]['type'] == typeToReplace and data[foodName]['cuisine'] == 'indian':
+                            replaceDict[item] = foodName
+                            hasFound = True
+                            break
+
+    # update ingredients
+    ingList = replaceSingleName(ingList, replaceDict, voice, engine)
+
+    # Update instructions
+    newInstructionList = replaceInstruction(instList, replaceDict, voice, engine)
+
+    return ingList, newInstructionList
+
 def convertStyle(ingList, instList, voice, engine):
     pass
 
@@ -205,6 +267,28 @@ def replaceInstruction(instructionList, substituteDict, voice, engine):
                 instruction.set_text(newInstructionText)
         newInstructionList.append(instruction)
     return newInstructionList
+
+def replaceSingleName(ingredientList, substituteDict, voice, engine):
+    '''
+    
+    :param ingredientList: list of ingredients
+    :param substituteList: dict of substitutes
+    '''
+    # update ingredients
+    for ingKey in ingredientList:
+        ingredient = ingredientList[ingKey]
+        done = False
+        for newIngredient in substituteDict.keys():
+            if done == False:
+                if newIngredient in ingredient.name:
+                    done = True
+                    ingredient.name = ingredient.name.replace(newIngredient, substituteDict[newIngredient])
+                    ingredientList[ingKey] = ingredient
+                    print("Replaced " + newIngredient + " with " + substituteDict[newIngredient])
+    
+    return ingredientList
+
+
 
 def invertDict(d):
     return {v: k for k, v in d.items()}
