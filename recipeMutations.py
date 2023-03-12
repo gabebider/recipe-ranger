@@ -16,7 +16,7 @@ def mutationType(input, ingredientsList, instructionsList, voice, engine):
     (r'\b(double|times|two)\b', "\nDoubling recipe!", doubleRecipe),
     (r'\b(divide|cut|half)\b', "\nHalving recipe!", halfRecipe),
     (r'\b(make it vegetarian|to vegetarian|to veg|remove meat)\b', "\nConverting to vegetarian!", toVegetarian),
-    (r'\b(from vegitarian|from veg|add meat)\b', "\nConverting from vegitarian!", fromVegetarian),
+    (r'\b(from vegetarian|from veg|add meat)\b', "\nConverting from vegetarian!", fromVegetarian),
     (r'\b(make healthy|to healthy|better for you|better for me)\b', "\nConverting to healthy!", toHealthy),
     (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy)\b', "\nConverting to unhealthy!", fromHealthy),
     (r'\b(gluten[ -]free|to gluten[ -]free)\b', "\nConverting to gluten-free!", toGlutenFree),
