@@ -102,10 +102,9 @@ class Recipe():
                     name = name[1:].strip()
             # Adds ingredient to ingredients list
             self.addIngredient(Ingredient(name, amount, unit, self.nlp))
-        pass
+        
     
     def printIngredients(self,printBreakdown=False):
-        print("\nYou will need the following ingredients:\n")
         for ingredient in self.ingredients.values():
             if printBreakdown:
                 print(ingredient.getBreakdown())
@@ -130,7 +129,8 @@ class Recipe():
         # print each instructions, appending the step number to the beginning
         step_num = 1
         for instruction in self.instructions:
-            print(f"Step {step_num}: {instruction}")
+            tempInstruction  = instruction.text[0].upper() + instruction.text[1:]
+            print(f"Step {step_num}: {tempInstruction}")
             step_num += 1
 
     def getInstructionsAsString(self):
@@ -144,18 +144,25 @@ class Recipe():
         instructions = "Instructions:\n"
         step_num = 1
         for instruction in self.instructions:
-            instructions += f"Step {step_num}: {instruction};\n"
+            tempInstruction = instruction.text[0].upper() + instruction.text[1:]
+            # print(f"Step {step_num}: {tempInstruction}")
+            instructions += f"Step {step_num}: {tempInstruction};\n"
             step_num += 1
 
         return instructions
 
     def printInstruction(self, step: int) -> None:
         # print the instruction at the given step
-        print(f"Step {step}: {self.instructions[step-1]}")
+        # capitalize the first letter of the instruction
+        instruction = self.instructions[step-1]
+        tempInstruction = instruction.text[0].upper() + instruction.text[1:]
+        print(f"Step {step}: {tempInstruction}")
 
     def getInstruction(self, step: int) -> None:
         # print the instruction at the given step
-        return f"Step {step}: {self.instructions[step-1]}"
+        instruction = self.instructions[step-1]
+        tempInstruction = instruction.text[0].upper() + instruction.text[1:]
+        return f"Step {step}: {tempInstruction}"
 
     def printRecipe(self, printBreakdownIng=False):
         self.printIngredients(printBreakdownIng)

@@ -9,3 +9,4 @@ SpeechRecognition
 pyaudio
 pyttsx3
 recipe-scrapers
+climage

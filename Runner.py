@@ -15,8 +15,17 @@ import datetime as dt
 from pprint import pprint
 import sys
 import traceback
+import climage
+
 class Runner():
     def __init__(self, link=None, voice=False):
+        print("")
+        logo = climage.convert('logo.png', width=100)
+        print(logo)
+        print("\n***********************************\n")
+        print("** Welcome to the Recipe Ranger! **\n")
+        print("***********************************")
+
         # if the user wants to use voice then initialize the text-to-speech engine
         engine = pyttsx3.init()
 
@@ -34,7 +43,7 @@ class Runner():
         if link == None:
             link = self.getRecipeLink()
         else:
-            print(f"Using provided link: {link}")
+            print(f"Using provided link: {link}")  
 
         Token.set_extension("trimmed_subtree", default=None, force=True)
         nlp = spacy.load("en_core_web_trf")
@@ -52,17 +61,20 @@ class Runner():
             self.recipe.getIngredientsFromUrl()
         else:
             self.recipe.parseForIngredients(scraper=scraper)
-        
 
         self.splitAndAddInstructions(scraper,nlp=nlp)
         self.recipe.write_objects_to_file()
 
         # Print Ingredients
+        print("\n***********************************\n")
+        print("You will need the following ingredients:\n")
+
         if voice:
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
         else:
             self.recipe.printIngredients(False)
-        print()
+        print("\n***********************************\n")
+
 
         # Option to mutate the recipe
         self.recipeAltering(voice, engine)
@@ -75,9 +87,13 @@ class Runner():
 
         # End of recipe
         if voice:
+            print("\n***************************************************************************\n")
             reader("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!", engine=engine)
+            print("\n***************************************************************************")
         else:
-            print("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!")
+            print("\n*******************************************************************************\n")
+            print("** Thanks for cooking with me. That's the end of the recipe! Hope you enjoy! **")
+            print("\n*******************************************************************************")
 
     # Gets the recipe link from one of two methods
     def getRecipeLink(self):
@@ -101,11 +117,11 @@ class Runner():
     def allOrFirstStep(self, voice, engine):
         # asks for preference
         if voice:
-            reader("Would you like to see all of the steps or just the first step?", engine=engine)
+            reader("Would you like to see all of the steps or just the first step? ", engine=engine)
             showAllSteps, confidence = listener()
             showAllSteps = showAllSteps.lower().strip()
         else:
-            showAllSteps = input("Would you like to see all of the steps or just the first step?: ").lower().strip()
+            showAllSteps = input("Would you like to see all of the steps or just the first step? ").lower().strip()
         print()
 
         # Uses regex to determine response
@@ -133,11 +149,16 @@ class Runner():
     def interactiveSteps(self, voice, engine):
         if(self.step == 1):
             if voice:
+                print("***********************************\n")
                 reader("There are " + str(len(self.recipe.instructions)) + " steps in this recipe.", engine=engine)
+                print("\n***********************************")
                 reader("\nHere is the first step:", engine=engine)
             else:
+                print("***********************************\n")
                 print("There are " + str(len(self.recipe.instructions)) + " steps in this recipe.")
+                print("\n***********************************")
                 print("\nHere is the first step:")
+    
         # 5. For all steps
         currStep = -1
         while self.step < len(self.recipe.instructions) + 1:
@@ -208,6 +229,7 @@ class Runner():
         
         # Chekcs if the user wants to edit the recipe
         mutateRecipeRegex = r'\b(yes|yeah|sure|ok(?:ay)?|transform|mutate|change)\b'
+        updated = False
         if re.search(mutateRecipeRegex, mutateRecipe.lower().strip()):
             if voice:
                 reader("\nGreat! How would you like to alter the recipe?", engine=engine)
@@ -215,14 +237,19 @@ class Runner():
             else:
                 mutation = input("\nGreat! How would you like to alter the recipe? ")
             self.recipe.replaceIngredientsListAndInstructionsList(mutationType(mutation.lower().strip(), self.recipe.getIngredientsList(), self.recipe.getInstructionsList(), voice, engine))
-        
+            updated = True
+
         # read new recipe
-        if voice:
-            reader("\nYour updated ingredients list is:", engine=engine)
+        if voice and updated:
+            print("\n***********************************\n")
+            reader("Your updated ingredients list is:\n", engine=engine)
             reader(self.recipe.getIngredientsListAsString(), engine=engine)
-        else:
-            # print("\nYour updated ingredients list is:")
+            print("\n***********************************\n")
+        elif updated:
+            print("\n***********************************\n")
+            print("Your updated ingredients list is:\n")
             self.recipe.printIngredients(False)
+            print("\n***********************************\n")
         pass
 
     # Splits and adds instructions
@@ -240,6 +267,20 @@ class Runner():
             self.recipe.addInstruction(Instruction(instruction,nlp))
 
 if __name__ == '__main__':
-    Runner(voice=False)
+    # Runner(voice=False)
     # friedRiceLink = "https://www.allrecipes.com/recipe/16954/chinese-chicken-fried-rice-ii/"
-    # Runner(link=friedRiceLink, voice=False)
+
+    # Required recipes
+    lasagnaLink = "https://www.allrecipes.com/recipe/24074/alysias-basic-meat-lasagna/"
+    meatlessPadThaiLink = "https://www.allrecipes.com/recipe/244716/shirataki-meatless-meat-pad-thai/"
+    beefBourguignonLink = "https://www.allrecipes.com/recipe/16167/beef-bourguignon-i/"
+    teriyakiSalmonLink = "https://www.allrecipes.com/recipe/228285/teriyaki-salmon/"
+
+    # Optional recipes
+    shrimpFriedRiceLink = "https://www.allrecipes.com/recipe/229293/korean-saewoo-bokkeumbap-shrimp-fried-rice/"
+    tiramisuCheesecakeLink = "https://www.allrecipes.com/recipe/7757/tiramisu-cheesecake/"
+    mexicanRiceLink = "https://www.allrecipes.com/recipe/73303/mexican-rice-iii/"
+
+    # One extra link - TODO 
+
+    Runner(link=None, voice=False)

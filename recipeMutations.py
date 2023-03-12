@@ -14,11 +14,11 @@ def mutationType(input, ingredientsList, instructionsList, voice, engine):
     #  TODO: add rest of cases
     regex_list = [
     (r'\b(double|times|two)\b', "\nDoubling recipe!", doubleRecipe),
-    (r'\b(divide|cut|half)\b', "\nHalving recipe!", halfRecipe),
+    (r'\b(divide|cut|half|halve)\b', "\nHalving recipe!", halfRecipe),
     (r'\b(make it vegetarian|to vegetarian|to veg|remove meat)\b', "\nConverting to vegetarian!", toVegetarian),
-    (r'\b(from vegitarian|from veg|add meat)\b', "\nConverting from vegitarian!", fromVegetarian),
-    (r'\b(make healthy|to healthy|better for you|better for me)\b', "\nConverting to healthy!", toHealthy),
-    (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy)\b', "\nConverting to unhealthy!", fromHealthy),
+    (r'\b(from vegetarian|from veg|add meat)\b', "\nConverting from vegetarian!", fromVegetarian),
+    (r'\b(make healthy|to healthy|better for you|better for me|make it healthy| healthier)\b', "\nConverting to healthy!", toHealthy),
+    (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy|make it unhealthy|less healthy)\b', "\nConverting to unhealthy!", fromHealthy),
     (r'\b(gluten[ -]free|to gluten[ -]free)\b', "\nConverting to gluten-free!", toGlutenFree),
     (r'\b(lactose)\b', "\nConverting to lactose-free!", toLactoseFree)
     ]
@@ -65,7 +65,7 @@ def convertToFloat(numberString):
         fixedNums = fixedNums[0]
     return fixedNums
 
-def doubleRecipe(ingList):
+def doubleRecipe(ingList, instList, voice, engine):
     for ingKey in ingList:
         ingredient = ingList[ingKey]
         if ingredient.quantity != None:
@@ -82,9 +82,9 @@ def doubleRecipe(ingList):
                     newAmount = str(newAmount * 2)
         ingredient.quantity = newAmount
         ingList[ingKey] = ingredient
-    return ingList
+    return ingList, instList
 
-def halfRecipe(ingList):
+def halfRecipe(ingList, instList, voice, engine):
     for ingKey in ingList:
         ingredient = ingList[ingKey]
         if ingredient.quantity != None:
@@ -101,10 +101,10 @@ def halfRecipe(ingList):
                     newAmount = str(newAmount * 0.5)
         ingredient.quantity = newAmount
         ingList[ingKey] = ingredient
-    return ingList
+    return ingList, instList
 
 def toVegetarian(ingList, instList, voice, engine):
-    meatToVeg = {"beef": "beyond meat", "sausage flavored spaghetti sauce": "vegitarian spaghetti sauce", "chicken breast": "tofu", "chicken": "tofu", "pork": "jackfruit", "fish": "tofu", "shrimp": "tofu", "turkey": "tofurky", "lamb": "seitan", "duck": "tempeh", "crab": "artichoke hearts", "bacon": "coconut bacon", "sausage": "beyond meat sausage", "pepperoni": "vegan pepperoni", "meatballs": "gardein meatless meatballs", "salmon": "smoked carrot", "oysters": "oyster mushrooms", "scallops": "king oyster mushrooms", "hamburger": "beyond meat burger", "hot dogs": "beyond meat sausage", "steak": "portobello mushroom steak", "bratwurst": "beyond meat sausage", "kielbasa": "beyond meat sausage", "crab cakes": "artichoke cake", "lobster": "artichoke hearts", "mussels": "oyster mushrooms", "quail": "tempeh", "rabbit": "seitan", "sausage rolls": "beyond meat sausage roll", "venison": "seitan", "anchovies": "tofu", "corned beef": "tempeh", "pork chops": "tempeh chops", "reuben sandwich": "tempeh sandwich", "tuna salad": "chickpea salad", "veal": "seitan", "goose": "seitan roast", "elk": "seitan steak", "horse": "soy steak", "emu": "vegan roast", "bison": "tofu steak"}
+    meatToVeg = {"beef": "beyond meat", "sausage flavored spaghetti sauce": "vegitarian spaghetti sauce", "skinless, boneless chicken breast halves": "tofu", "chicken breast": "tofu", "chicken": "tofu", "pork": "jackfruit", "fish": "tofu", "shrimp": "tofu", "turkey": "tofurky", "lamb": "seitan", "duck": "tempeh", "crab": "artichoke hearts", "bacon": "coconut bacon", "sausage": "beyond meat sausage", "pepperoni": "vegan pepperoni", "meatballs": "gardein meatless meatballs", "salmon": "smoked carrot", "oysters": "oyster mushrooms", "scallops": "king oyster mushrooms", "hamburger": "beyond meat burger", "hot dogs": "beyond meat sausage", "steak": "portobello mushroom steak", "bratwurst": "beyond meat sausage", "kielbasa": "beyond meat sausage", "crab cakes": "artichoke cake", "lobster": "artichoke hearts", "mussels": "oyster mushrooms", "quail": "tempeh", "rabbit": "seitan", "sausage rolls": "beyond meat sausage roll", "venison": "seitan", "anchovies": "tofu", "corned beef": "tempeh", "pork chops": "tempeh chops", "reuben sandwich": "tempeh sandwich", "tuna salad": "chickpea salad", "veal": "seitan", "goose": "seitan roast", "elk": "seitan steak", "horse": "soy steak", "emu": "vegan roast", "bison": "tofu steak"}
     # update ingredients
     ingList = replaceIngredient(ingList, meatToVeg, voice, engine)
 
@@ -113,13 +113,15 @@ def toVegetarian(ingList, instList, voice, engine):
     return ingList, newInstructionList
 
 def fromVegetarian(ingList, instList, voice, engine):
-    meatToVeg = {"beef": "beyond meat", "sausage flavored spaghetti sauce": "vegitarian spaghetti sauce", "chicken breast": "tofu", "chicken": "tofu", "pork": "jackfruit", "fish": "tofu", "shrimp": "tofu", "turkey": "tofurky", "lamb": "seitan", "duck": "tempeh", "crab": "artichoke hearts", "bacon": "coconut bacon", "sausage": "beyond meat sausage", "pepperoni": "vegan pepperoni", "meatballs": "gardein meatless meatballs", "salmon": "smoked carrot", "oysters": "oyster mushrooms", "scallops": "king oyster mushrooms", "hamburger": "beyond meat burger", "hot dogs": "beyond meat sausage", "steak": "portobello mushroom steak", "bratwurst": "beyond meat sausage", "kielbasa": "beyond meat sausage", "crab cakes": "artichoke cake", "lobster": "artichoke hearts", "mussels": "oyster mushrooms", "quail": "tempeh", "rabbit": "seitan", "sausage rolls": "beyond meat sausage roll", "venison": "seitan", "anchovies": "tofu", "corned beef": "tempeh", "pork chops": "tempeh chops", "reuben sandwich": "tempeh sandwich", "tuna salad": "chickpea salad", "veal": "seitan", "goose": "seitan roast", "elk": "seitan steak", "horse": "soy steak", "emu": "vegan roast", "bison": "tofu steak"}
+    meatToVeg = {"beef": "beyond meat", "sausage flavored spaghetti sauce": "vegitarian spaghetti sauce", "chicken breast": "tofu", "chicken": "tofu", "pork": "jackfruit", "fish": "tofu", "shrimp": "tofu", "turkey": "tofurky", "lamb": "seitan", "duck": "tempeh", "crab": "artichoke hearts", "bacon": "coconut bacon", "sausage": "beyond meat sausage", "pepperoni": "vegan pepperoni", "meatballs": "gardein meatless meatballs", "salmon": "smoked carrot", "oysters": "oyster mushrooms", "scallops": "king oyster mushrooms", "hamburger": "beyond meat burger", "hot dogs": "beyond meat sausage", "steak": "portobello mushroom steak", "bratwurst": "beyond meat sausage", "kielbasa": "beyond meat sausage", "crab cakes": "artichoke cake", "lobster": "artichoke hearts", "mussels": "oyster mushrooms", "quail": "tempeh", "rabbit": "seitan", "sausage rolls": "beyond meat sausage roll", "venison": "seitan", "anchovies": "tofu", "corned beef": "tempeh", "pork chops": "tempeh chops", "reuben sandwich": "tempeh sandwich", "tuna salad": "chickpea salad", "veal": "seitan", "goose": "seitan roast", "elk": "seitan steak", "horse": "soy steak", "emu": "vegan roast", "bison": "tofu steak", "chicken": "tofu"}
     vegToMeat = invertDict(meatToVeg)
+    vegToMeat['tofu'] = 'chicken'
     # update ingredients
     ingList = replaceIngredient(ingList, vegToMeat, voice, engine)
 
     # Update instructions
-    newInstructionList = replaceInstruction(instList, vegToMeat)
+    newInstructionList = replaceInstruction(instList, vegToMeat, voice, engine)
+    return ingList, newInstructionList
 
 
 def toHealthy(ingList, instList, voice, engine):
@@ -132,7 +134,7 @@ def toHealthy(ingList, instList, voice, engine):
     return ingList, newInstructionList
 
 def fromHealthy(ingList, instList, voice, engine):
-    unhealthyToHealthy = {"butter": "olive oil","sugar": "honey","white flour": "whole wheat flour","canola oil": "avocado oil","processed cheese": "feta cheese","soda": "sparkling water","white rice": "brown rice","corn syrup": "maple syrup","cream": "greek yogurt","potato chips": "kale chips","mayonnaise": "hummus","bacon": "turkey bacon","bread crumbs": "rolled oats","salt": "herbs and spices","vegetable oil": "coconut oil","white bread": "whole grain bread","canned soup": "homemade soup","canned fruits in syrup": "fresh fruits","fruit juice": "whole fruit","refined pasta": "whole grain pasta","ice cream": "frozen yogurt","chocolate chips": "cacao nibs","margarine": "avocado","beef jerky": "beef or turkey jerky with no added preservatives","energy drinks": "green tea","instant noodles": "zucchini noodles","candies": "dried fruits","sausages": "chicken sausages","whipped cream": "coconut cream","beef": "chicken","pork": "chicken","lamb": "chicken","duck": "chicken" }
+    unhealthyToHealthy = {"butter": "olive oil","sugar": "honey","white flour": "whole wheat flour","canola oil": "avocado oil","processed cheese": "feta cheese","soda": "sparkling water","white rice": "brown rice","corn syrup": "maple syrup","cream": "greek yogurt","potato chips": "kale chips","mayonnaise": "hummus","bacon": "turkey bacon","bread crumbs": "rolled oats","salt": "herbs and spices","vegetable oil": "coconut oil","white bread": "whole grain bread","canned soup": "homemade soup","canned fruits in syrup": "fresh fruits","fruit juice": "whole fruit","refined pasta": "whole grain pasta","ice cream": "frozen yogurt","chocolate chips": "cacao nibs","margarine": "avocado","beef jerky": "beef or turkey jerky with no added preservatives","energy drinks": "green tea","instant noodles": "zucchini noodles","candies": "dried fruits","sausages": "chicken sausages","whipped cream": "coconut cream","beef": "chicken","pork": "chicken","lamb": "chicken","duck": "chicken", "pork steaks": "salmon steaks"}
     healthyToUnhealthy = invertDict(unhealthyToHealthy)
     # update ingredients
     ingList = replaceIngredient(ingList, healthyToUnhealthy, voice, engine)
@@ -205,5 +207,5 @@ def replaceInstruction(instructionList, substituteDict, voice, engine):
     return newInstructionList
 
 def invertDict(d):
-    return dict((v,k) for k in d for v in d[k])
+    return {v: k for k, v in d.items()}
 
