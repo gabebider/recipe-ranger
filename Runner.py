@@ -14,9 +14,13 @@ import datetime as dt
 from pprint import pprint
 import sys
 import traceback
+import climage
 
 class Runner():
     def __init__(self, link=None, voice=False):
+        print("")
+        logo = climage.convert('logo.png', width=100)
+        print(logo)
         print("\n***********************************\n")
         print("** Welcome to the Recipe Ranger! **\n")
         print("***********************************")
