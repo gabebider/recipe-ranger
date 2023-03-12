@@ -45,9 +45,9 @@ That will let you choose between providing a recipe or searching for one. If you
     - [x] (optional) Descriptor (e.g. fresh, extra-virgin)
     - [x] (optional) Preparation (e.g. finely chopped)
   - [x] Tools – pans, graters, whisks, etc.
-  - [?] Methods
-    - [?] Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
-    - [?] (optional) Other cooking methods used (e.g. chop, grate, stir, shake, mince, crush, squeeze, etc.)
+  - [ ] Methods
+    - [ ] Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
+    - [ ] (optional) Other cooking methods used (e.g. chop, grate, stir, shake, mince, crush, squeeze, etc.)
   - [x] Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
 - [x] Ask the user what kind of transformation they want to do.
   - [x] To and from vegetarian (REQUIRED)
