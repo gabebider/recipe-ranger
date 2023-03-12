@@ -1,3 +1,7 @@
+plate
+sponge
+ladle
+corkscrew
 cup
 rolling pin
 wok
@@ -242,3 +246,61 @@ kitchen scale
 electric griddle
 pot
 mug
+whisk
+mug
+strainer
+blender
+knife
+colander
+dish rack
+cup
+saucepan
+fork
+wok
+bottle opener
+rolling pin
+spoon
+tongs
+bowl
+toaster
+mixing bowl
+measuring cup
+pot
+can opener
+peeler
+microwave
+cutting board
+oven
+dish soap
+grater
+cup
+pot
+sponge
+spoon
+measuring cup
+knife
+mug
+dish rack
+oven
+grater
+peeler
+colander
+can opener
+rolling pin
+plate
+bottle opener
+ladle
+fork
+whisk
+cutting board
+tongs
+wok
+blender
+saucepan
+bowl
+strainer
+corkscrew
+toaster
+microwave
+mixing bowl
+dish soap
