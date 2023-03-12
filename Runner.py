@@ -14,9 +14,10 @@ import datetime as dt
 from pprint import pprint
 import sys
 import traceback
+
 class Runner():
     def __init__(self, link=None, voice=False):
-        print("***********************************\n")
+        print("\n***********************************\n")
         print("** Welcome to the Recipe Ranger! **\n")
         print("***********************************")
 
@@ -77,9 +78,13 @@ class Runner():
 
         # End of recipe
         if voice:
+            print("\n***************************************************************************\n")
             reader("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!", engine=engine)
+            print("\n***************************************************************************")
         else:
-            print("Thanks for cooking with me. That's the end of the recipe! Hope you enjoy!")
+            print("\n*******************************************************************************\n")
+            print("** Thanks for cooking with me. That's the end of the recipe! Hope you enjoy! **")
+            print("\n*******************************************************************************")
 
     # Gets the recipe link from one of two methods
     def getRecipeLink(self):
@@ -103,11 +108,11 @@ class Runner():
     def allOrFirstStep(self, voice, engine):
         # asks for preference
         if voice:
-            reader("Would you like to see all of the steps or just the first step?", engine=engine)
+            reader("Would you like to see all of the steps or just the first step? ", engine=engine)
             showAllSteps, confidence = listener()
             showAllSteps = showAllSteps.lower().strip()
         else:
-            showAllSteps = input("Would you like to see all of the steps or just the first step?: ").lower().strip()
+            showAllSteps = input("Would you like to see all of the steps or just the first step? ").lower().strip()
         print()
 
         # Uses regex to determine response
@@ -135,11 +140,16 @@ class Runner():
     def interactiveSteps(self, voice, engine):
         if(self.step == 1):
             if voice:
+                print("***********************************\n")
                 reader("There are " + str(len(self.recipe.instructions)) + " steps in this recipe.", engine=engine)
+                print("\n***********************************")
                 reader("\nHere is the first step:", engine=engine)
             else:
+                print("***********************************\n")
                 print("There are " + str(len(self.recipe.instructions)) + " steps in this recipe.")
+                print("\n***********************************")
                 print("\nHere is the first step:")
+    
         # 5. For all steps
         currStep = -1
         while self.step < len(self.recipe.instructions) + 1:
