@@ -6,13 +6,13 @@
 
 ## Installation
 
-You first need to install the dependencies for the project. You can do this on macos by running the following command:
+You first need to install the dependencies for the project. You can do this on macOS by running the following command (not needed for Windows):
 
 ```bash
 brew install portaudio
 ```
 
-Then, you can install the Python dependencies by running the following command:
+Then, you can install the Python dependencies by running the following command (Both macOS and Windows):
 
 ```bash
 pip install -r requirements.txt
@@ -45,8 +45,8 @@ That will let you choose between providing a recipe or searching for one. If you
     - [x] (optional) Descriptor (e.g. fresh, extra-virgin)
     - [x] (optional) Preparation (e.g. finely chopped)
   - [x] Tools – pans, graters, whisks, etc.
-  - [ ] Methods
-    - [ ] Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
+  - [x] Methods
+    - [x] Primary cooking method (e.g. sauté, broil, boil, poach, etc.)
     - [ ] (optional) Other cooking methods used (e.g. chop, grate, stir, shake, mince, crush, squeeze, etc.)
   - [x] Steps – parse the directions into a series of steps that each consist of ingredients, tools, methods, and times
 - [x] Ask the user what kind of transformation they want to do.
@@ -78,3 +78,7 @@ We made our chat bot voice to text so you can interact with it. This video can b
 ## Authors
 
 By Spencer Rothfleisch, Gabe Bider, Eli Barlow and Isaac Miller
+
+## Github Link
+
+View the GitHub Repository [here](https://github.com/gabebider/cs337-proj2)
