@@ -5,6 +5,7 @@ import pyttsx3
 # pip install pyaudio
 # had to brew install portaudio
 # pip install pyttsx3
+# To enable speech recognition, remember to set voice=True in Runner.py!
 
 def listener():
     # create a recognizer object
