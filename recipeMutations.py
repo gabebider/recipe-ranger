@@ -16,7 +16,7 @@ def mutationType(input, ingredientsList, instructionsList, voice, engine):
     regex_list = [
     (r'\b(double|times|two)\b', "\nDoubling recipe!", doubleRecipe),
     (r'\b(divide|cut|half|halve)\b', "\nHalving recipe!", halfRecipe),
-    (r'\b(make it vegetarian|to vegetarian|to veg|remove meat)\b', "\nConverting to vegetarian!", toVegetarian),
+    (r'\b(make it vegetarian|to vegetarian|to veg|remove meat|make vegetarian)\b', "\nConverting to vegetarian!", toVegetarian),
     (r'\b(from vegetarian|from veg|add meat|non[- ]vegetarian)\b', "\nConverting from vegetarian!", fromVegetarian),
     (r'\b(make healthy|to healthy|better for you|better for me|make it healthy| healthier)\b', "\nConverting to healthy!", toHealthy),
     (r'\b(make unhealthy|to unhealthy|worse for you|worse for me|unhealthy|make it unhealthy|less healthy)\b', "\nConverting to unhealthy!", fromHealthy),

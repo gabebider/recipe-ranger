@@ -152,10 +152,15 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
                 return return_str
         return "I'm sorry, I don't believe there is a duration or finish criteria associated with this step 👁️👄👁️"
 
+    if is_all_tools_question(question):
+        return recipe.getToolsAsString()
+    elif is_tool_question(question):
+        return recipe.getInstructionToolsAsString(current_step)
     # Figure out if the question is vague, and if so, return a proper youtube or google search
     # check if vague question
     if is_all_instruction_question(question):
         return recipe.getInstructionsAsString()
+
     
     if is_all_ingredient_question(question):
         return recipe.getIngredientsListAsString()
@@ -199,6 +204,41 @@ def is_amount_question(question: str) -> bool:
         if keyword in question:
             return True
     
+    return False
+
+def is_tool_question(question: str) -> bool:
+    '''
+    This function takes a question and returns True if it is a tool question, False otherwise.
+    '''
+
+    assert type(question) == str, "question must be a string"
+
+    # normalize the question
+    question = question.lower().strip()
+    question = re.sub(r"[^a-zA-Z\s]+", "", question)
+
+    tool_keywords = ["tool", "tools", "utensil", "utensils", "equipment"]
+    for keyword in tool_keywords:
+        if keyword in question:
+            return True
+    return False
+
+def is_all_tools_question(question: str) -> bool:
+    '''
+    This function takes a question and returns True if it is a tool question, specifically asking about all tools, False otherwise.
+    '''
+    assert type(question) == str, "question must be a string"
+
+    question = question.lower().strip()
+    question = re.sub(r"[^a-zA-Z\s]+", "", question)
+
+    if not is_tool_question(question):
+        return False
+    
+    all_keywords = ["all","every","each","whole"]
+    for keyword in all_keywords:
+        if keyword in question:
+            return True
     return False
 
 def is_vague_question(question: str) -> bool:

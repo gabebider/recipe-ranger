@@ -4,6 +4,7 @@ from spacy.tokens import Token
 from spacy.language import Language
 import subprocess
 import os
+# this file is my first born child -- Eli
 
 @Language.component("merge_compound_and_proper_nouns")
 def merge_compound_and_proper_nouns(doc):
@@ -102,7 +103,6 @@ def get_obj_text(token):
     Return the text of the token with amods and advmods attached
     """
     remove_tokens_by_deps(token, {"cc","ccomp","prep"})
-    print(token.text,token._.trimmed_subtree)
     if token._.trimmed_subtree == None:
         return token.text
     return ' '.join([t.text for t in token._.trimmed_subtree if t.dep_ in ["amod","advmod","dobj","pobj","nsubj","conj"]])
@@ -143,8 +143,6 @@ def remove_tokens_by_deps(token, deps_to_remove):
 
     trim_children(token)
     token._.trimmed_subtree = [t for t in token.subtree if t not in trimmed_children]
-
-
 
 def get_conjuncts(tokens, processed=None):
     """

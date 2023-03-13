@@ -134,6 +134,26 @@ class Recipe():
             print(f"Step {step_num}: {tempInstruction}")
             step_num += 1
 
+    def getInstructionToolsAsString(self, step: int) -> str:
+        assert isinstance(step, int), "step must be an integer"
+        if step < 1:
+            step == 1
+        elif step > len(self.instructions):
+            step == len(self.instructions)
+
+        instruction = self.instructions[step-1]
+        tools = instruction.tools
+
+        if len(tools) == 0:
+            return "\nNo tools are explicitly mentioned in this step\n"
+        
+        else:
+            toolsString = "\nThe tools explicitly mentioned in this step are:\n"
+            for tool in tools:
+                toolsString += f"  - {tool}\n"
+            return toolsString
+
+
     def getInstructionsAsString(self):
         '''
             Returns a string of all instructions in the recipe
@@ -172,11 +192,16 @@ class Recipe():
         print()
         print("Yum! 😋")
 
+    def getToolsAsString(self):
+        s = "\nThe recipe explicity mentions the following tools, however you may need to use other tools for certain steps at your own discretion:\n\n"
+        for tool in self.tools:
+            s += f"  - {tool}\n"
+        return s
+        
     def getInstructionObject(self, step: int) -> Instruction:
         # return the instruction at the given step
         return self.instructions[step-1]
-    
-    #! this is just a test function -=-Eli
+
     def identify_tools(self):
 
         # fill a set with tools from `tools.txt`
@@ -217,9 +242,6 @@ class Recipe():
         tools_used_dict = defaultdict(set)
         for obj in objs:
             tools_used_dict[get_obj_text(obj[0])].add(obj[1])
-        print(objs)
-        print(tools_used_dict)
-
 
         # sort in increasing order of length of key
         tools_used_dict = dict(sorted(tools_used_dict.items(), key=lambda item: len(item[0].split())))
@@ -231,11 +253,6 @@ class Recipe():
         for tool in self.tools:
             for instruction in tools_used_dict[tool]:
                 self.instructions[instruction].add_tool(tool)
-        
-        for instruction in self.instructions:
-            print(instruction.text)
-            print(instruction.tools)
-            print()
 
 
 
