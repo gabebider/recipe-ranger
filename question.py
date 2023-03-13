@@ -72,8 +72,8 @@ def questionParser(question: str, recipe: Recipe, current_step: int) -> str:
     assert type(question) == str, "question must be a string"
     assert type(recipe) == Recipe, "recipe must be a Recipe object"
     assert type(current_step) == int, "current_step must be an int"
-    assert current_step >= 0, "current_step must be within recipe bounds"
-    assert current_step < len(recipe.instructions), "current_step must be within recipe bounds"
+    assert current_step > 0, "current_step must be within recipe bounds"
+    assert current_step <= len(recipe.instructions), "current_step must be within recipe bounds"
 
     instruction = recipe.instructions[current_step-1]
 
