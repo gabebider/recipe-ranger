@@ -67,7 +67,6 @@ def parseIngredientCore(ingredientName:str, nlp:spacy.language.Language):
             break
 
     if core == None:
-        print("getMainIngredientBody: No noun found in ingredient name, returning None")
         return EMPTY_RETURN
         
     descriptors = []

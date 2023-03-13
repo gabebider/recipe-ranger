@@ -1,318 +1,322 @@
 {
-    "chicken": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "beef": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "pork": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "lamb": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "mutton": {
-      "type": "protein",
-      "cuisine": "indian"
-    },
-    "goat": {
-      "type": "protein",
-      "cuisine": "indian"
-    },
-    "tilapia": {
-      "type": "protein",
-      "cuisine": "mexican"
-    },
-    "catfish": {
-      "type": "protein",
-      "cuisine": "mexican"
-    },
-    "shrimp": {
-      "type": "protein",
-      "cuisine": "mexican"
-    },
-    "crab": {
-      "type": "protein",
-      "cuisine": "mexican"
-    },
-    "lobster": {
-      "type": "protein",
-      "cuisine": "mexican"
-    },
-    "salmon": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "tuna": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "squid": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "octopus": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "paneer": {
-      "type": "protein",
-      "cuisine": "indian"
-    },
-    "tofu": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "chickpeas": {
-      "type": "protein",
-      "cuisine": "indian"
-    },
-    "lentils": {
-      "type": "protein",
-      "cuisine": "indian"
-    },
-    "black beans": {
-      "type": "protein",
-      "cuisine": "mexican"
-    },
-    "pinto beans": {
-      "type": "protein",
-      "cuisine": "mexican"
-    },
-    "kidney beans": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "turkey": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "duck": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "quail": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "eggs": {
-      "type": "protein",
-      "cuisine": "global"
-    },
-    "garam masala": {
-      "type": "spice",
-      "cuisine": "indian"
-    },
-    "cumin": {
-      "type": "spice",
-      "cuisine": "global"
-    },
-    "turmeric": {
-      "type": "spice",
-      "cuisine": "indian"
-    },
-    "cardamom": {
-      "type": "spice",
-      "cuisine": "indian"
-    },
-    "Ajwain": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Amchur": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Aniseed": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Asafoetida": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Bay Leaf": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Black Cardamom": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Black Cumin": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Black Mustard Seeds": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Black Peppercorns": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Caraway Seeds": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Cardamom": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Cinnamon": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Clove": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Coriander Seeds": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Cumin Seeds": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Curry Leaves": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Fenugreek Seeds": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Fennel Seeds": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Green Cardamom": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Nigella Seeds": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Red Chili Powder": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Saffron": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Star Anise": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Turmeric": {
-        "type": "spice",
-        "cuisine": "indian"
-    },
-    "Ancho Chili Powder": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Achiote": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Cilantro": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Chipotle": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Cumin": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Epazote": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Oregano": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Pasilla Chili Powder": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Smoked Paprika": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Tomatillo": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Annatto Seeds": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Cinnamon (Canela)": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Vanilla": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Saffron (Azafran)": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Papalo": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Mint Marigold (Tagetes lucida)": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Chile Pequin": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Guajillo Chili Powder": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Habanero Powder": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Allspice (Pimenta)": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Coriander (Cilantro)": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Mint": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Mexican Thyme (Thymus vulgaris)": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Pasilla Chili": {
-        "type": "spice",
-        "cuisine": "mexican"
-    },
-    "Serrano Powder": {
-        "type": "spice",
-        "cuisine": "mexican"
-    }
+  "chicken": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "beef": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "pork": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "lamb": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "mutton": {
+    "type": "protein",
+    "cuisine": "indian"
+  },
+  "goat": {
+    "type": "protein",
+    "cuisine": "indian"
+  },
+  "tilapia": {
+    "type": "protein",
+    "cuisine": "mexican"
+  },
+  "catfish": {
+    "type": "protein",
+    "cuisine": "mexican"
+  },
+  "shrimp": {
+    "type": "protein",
+    "cuisine": "mexican"
+  },
+  "crab": {
+    "type": "protein",
+    "cuisine": "mexican"
+  },
+  "lobster": {
+    "type": "protein",
+    "cuisine": "mexican"
+  },
+  "steak": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "salmon": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "tuna": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "squid": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "octopus": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "paneer": {
+    "type": "protein",
+    "cuisine": "indian"
+  },
+  "tofu": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "chickpeas": {
+    "type": "protein",
+    "cuisine": "indian"
+  },
+  "lentils": {
+    "type": "protein",
+    "cuisine": "indian"
+  },
+  "black beans": {
+    "type": "protein",
+    "cuisine": "mexican"
+  },
+  "pinto beans": {
+    "type": "protein",
+    "cuisine": "mexican"
+  },
+  "kidney beans": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "turkey": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "duck": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "quail": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "eggs": {
+    "type": "protein",
+    "cuisine": "global"
+  },
+  "garam masala": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "cumin": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "turmeric": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "cardamom": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Ajwain": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Amchur": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Aniseed": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Asafoetida": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Bay Leaf": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Black Cardamom": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Black Cumin": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Black Mustard Seeds": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Black Peppercorns": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Caraway Seeds": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Cardamom": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Cinnamon": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Clove": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Coriander Seeds": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Cumin Seeds": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Curry Leaves": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Fenugreek Seeds": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Fennel Seeds": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Green Cardamom": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Nigella Seeds": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Red Chili Powder": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Saffron": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Star Anise": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Turmeric": {
+    "type": "spice",
+    "cuisine": "indian"
+  },
+  "Ancho Chili Powder": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Achiote": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Cilantro": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Chipotle": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Cumin": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Epazote": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Oregano": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Pasilla Chili Powder": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Smoked Paprika": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Tomatillo": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Annatto Seeds": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Cinnamon (Canela)": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Vanilla": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Saffron (Azafran)": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Papalo": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Mint Marigold (Tagetes lucida)": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Chile Pequin": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Guajillo Chili Powder": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Habanero Powder": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Allspice (Pimenta)": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Coriander (Cilantro)": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Mint": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Mexican Thyme (Thymus vulgaris)": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Pasilla Chili": {
+    "type": "spice",
+    "cuisine": "mexican"
+  },
+  "Serrano Powder": {
+    "type": "spice",
+    "cuisine": "mexican"
+  }
 }
