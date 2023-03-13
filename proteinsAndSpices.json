@@ -103,10 +103,6 @@
     "type": "protein",
     "cuisine": "global"
   },
-  "eggs": {
-    "type": "protein",
-    "cuisine": "global"
-  },
   "garam masala": {
     "type": "spice",
     "cuisine": "indian"
@@ -237,7 +233,7 @@
   },
   "Cumin": {
     "type": "spice",
-    "cuisine": "mexican"
+    "cuisine": "indian"
   },
   "Epazote": {
     "type": "spice",
