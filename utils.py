@@ -1,5 +1,6 @@
 import spacy
 from spacy import displacy
+from spacy.tokens import Token
 from spacy.language import Language
 import subprocess
 import os
@@ -23,21 +24,6 @@ def merge_compound_and_proper_nouns(doc):
 
     return doc
 
-def reduce_set(s):
-    """
-    Removes elements from a set that are substrings of other elements in the set.
-    """
-    reduced_set = set()
-    for elem in s:
-        is_substring = False
-        for other_elem in s:
-            if elem != other_elem and elem in other_elem:
-                is_substring = True
-                break
-        if not is_substring:
-            reduced_set.add(elem)
-    return reduced_set
-
 @Language.component("merge_hyphenated_tokens")
 def merge_hyphenated_tokens(doc):
     """
@@ -45,7 +31,6 @@ def merge_hyphenated_tokens(doc):
     """
     with doc.retokenize() as retokenizer:
         for token in doc[1:-1]:
-            # print(token.text)
             if token.text.endswith('-') and doc[token.i+1].text and doc[token.i-1].text:
                 retokenizer.merge(doc[token.i-1:token.i+2])
     return doc
@@ -66,10 +51,8 @@ def parseIngredientCore(ingredientName:str, nlp:spacy.language.Language):
 
     EMPTY_RETURN = {"core": None,"descriptors":[],"preparations":[]}
 
-    # TODO: make these more efficient --> somehow pass around doc or span objects instead of re-parsing every time
     doc = nlp(ingredientName)
 
-    # TODO: test this with temperature and time -- right now just returns the first noun
     try:
         np = list(doc.noun_chunks)[0]
     except: 
@@ -118,27 +101,50 @@ def get_obj_text(token):
     """
     Return the text of the token with amods and advmods attached
     """
-    trim_subtree(token)
+    remove_tokens_by_deps(token, {"cc","ccomp","prep"})
+    print(token.text,token._.trimmed_subtree)
     if token._.trimmed_subtree == None:
         return token.text
     return ' '.join([t.text for t in token._.trimmed_subtree if t.dep_ in ["amod","advmod","dobj","pobj","nsubj","conj"]])
 
-def trim_subtree(token):
+
+def remove_tokens_by_deps(token, deps_to_remove):
     """
-    Trims the subtree of a token so that it does not include tokens connected by a conjunction.
-    """
-    children = list(token.children)
-    for child in children:
-        if child.dep_ in ["conj","cc","ccomp","prep"]:
-            return
-        trim_subtree(child)
-    # subtree = [t for t in token.subtree if not (t.i < token.i and t.i > child.i)]
-    conj_children = [t for t in token.subtree if t.dep_ == "conj"]
-    def in_subtree(token):
-        return token in [child for child in conj_children]
+    Remove all tokens that have a specified set of dependency labels from the
+    token's subtree, and create a new custom attribute called 'trimmed_subtree'
+    for the token that contains the subtree with the specified dependencies
+    removed.
     
-    subtree = [t for t in token.subtree if not any(in_subtree(child) for child in t.children)]
-    token._.trimmed_subtree = subtree
+    Args:
+        token (spacy.tokens.Token): The token to remove dependencies from.
+        deps_to_remove (set): A set of dependency labels to remove.
+    
+    Returns:
+        None
+    """
+    trimmed_children = set()
+    processed_children = set()
+
+    def remove_all_children(token):
+        for child in token.children:
+            if child not in processed_children:
+                trimmed_children.add(child)
+                processed_children.add(child)
+                remove_all_children(child)
+
+    def trim_children(token):
+        for child in token.children:
+            if child not in processed_children:
+                if child.dep_ in deps_to_remove:
+                    remove_all_children(child)
+                else:
+                    processed_children.add(child)
+                    trim_children(child)
+
+    trim_children(token)
+    token._.trimmed_subtree = [t for t in token.subtree if t not in trimmed_children]
+
+
 
 def get_conjuncts(tokens, processed=None):
     """
@@ -146,15 +152,14 @@ def get_conjuncts(tokens, processed=None):
     """
     if processed is None:
         processed = set()
-    conjuncts = []
-    conj_set = set(conjuncts)
-    for token in tokens:
+    conjuncts = set()
+    for token, idx in tokens:
         if token not in processed:
             processed.add(token)
-            conjuncts += [t for t in token.subtree if t.dep_ == "conj"]
+            conjuncts |= set([(t,idx) for t in token.subtree if t.dep_ == "conj"])
     if conjuncts:
-        conjuncts += get_conjuncts(conjuncts, processed=processed)
-    return tokens + conjuncts
+        conjuncts |= get_conjuncts(conjuncts, processed=processed)
+    return tokens | conjuncts
 
 def ParseDependency(s):
     """
@@ -181,6 +186,7 @@ def runMultiple(arr):
         miniRunner(s)
     os.system("rm parse.html")
 
+# some arrays for testing
 orzo_ingredients = ["uncooked orzo pasta",
                     "pitted green olives",
                     "diced feta cheese",
@@ -206,6 +212,7 @@ orzo_instructions = [
 orzo_2 = ["onion, chopped","garlic, minced","lemon, zested","lemon, sliced for garnish"]
     
 def add_to_tools(list_of_tools):
+    # helper function used to exntend the list of tools in tools.txt
     tool_set = set()
 
     with open("tools.txt","r") as f:
@@ -219,9 +226,7 @@ def add_to_tools(list_of_tools):
             f.write(tool.strip() + "\n")
 
 if __name__ == '__main__':
-    # runMultiple(orzo_instructions)
-    add_to_tools(["pot", "wok", "saucepan", "knife", "cutting board", "spoon", "fork", "plate", "bowl", "cup", "mug", "blender", "toaster", "microwave", "oven", "mixing bowl", "measuring cup", "colander", "strainer", "grater", "peeler", "tongs", "ladle", "whisk", "rolling pin", "can opener", "bottle opener", "corkscrew", "dish rack", "dish soap", "sponge"]
-)
+    # Token.set_extension("trimmed_subtree", default=None, force=True)
+    miniRunner("Bring a large pot of lightly salted water to a boil")
+    # add_to_tools(["pot", "wok", "saucepan", "knife", "cutting board", "spoon", "fork", "plate", "bowl", "cup", "mug", "blender", "toaster", "microwave", "oven", "mixing bowl", "measuring cup", "colander", "strainer", "grater", "peeler", "tongs", "ladle", "whisk", "rolling pin", "can opener", "bottle opener", "corkscrew", "dish rack", "dish soap", "sponge"]
 
-# TODO: modify parsing code so that it will read something like "salt and pepper to taste" as two separate ingredients
-# -- "salt to taste" and "pepper to taste"

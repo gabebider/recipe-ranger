@@ -10,6 +10,7 @@ class Instruction:
         self.text = text
         self.nlp = nlp
         self.parse_text()
+        self.tools = set()
 
     def __str__(self):
         return self.text
@@ -63,7 +64,9 @@ class Instruction:
             parses[verb.text] = generate_parse(verb)
         
         self.parses = parses
-            
+    
+    def add_tool(self, tool):
+        self.tools.add(tool)
        
         
         

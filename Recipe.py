@@ -1,9 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 from Ingredient import Ingredient
+from collections import defaultdict
 from recipe_scrapers import scrape_me
 import re
-from utils import get_obj_text, get_conjuncts, parseIngredientCore, reduce_set
+from utils import get_obj_text, get_conjuncts, parseIngredientCore
 import spacy
 from Instruction import Instruction
 
@@ -176,7 +177,9 @@ class Recipe():
         return self.instructions[step-1]
     
     #! this is just a test function -=-Eli
-    def write_objects_to_file(self):
+    def identify_tools(self):
+
+        # fill a set with tools from `tools.txt`
         tools = set()
         with open('tools.txt','r') as f:
             for line in f:
@@ -187,24 +190,53 @@ class Recipe():
             core = core['core']
             return core in tools
         
-        with open('recipe_objects.txt','w') as f:
-            objs = []
-            for instruction in self.instructions:
-                doc = self.nlp(instruction.text)
-                for token in doc:
-                    if token.dep_ in ["dobj","pobj"]:
-                        objs.append(token)
-            objs = get_conjuncts(objs)
-            objs = list(set(obj for obj in objs if (obj and obj.text != "")))
-            objs = [obj for obj in objs if in_tools(obj)]
+        def merge_substring_keys(dictionary):
+            keys = list(dictionary.keys())
+            for i, key1 in enumerate(keys):
+                for key2 in keys[i+1:]:
+                    if key1 in key2:
+                        dictionary[key2] |= dictionary[key1]
+                        del dictionary[key1]
+                        break
+            return dictionary
 
-            tools_used_set = set()
-            for token in objs:
-                tools_used_set.add(get_obj_text(token))
-                
-            tools_used_set = reduce_set(tools_used_set)
-            for tool in tools_used_set:
-                f.write(tool + "\n")
+        objs = set()
+        for idx, instruction in enumerate(self.instructions):
+            doc = self.nlp(instruction.text)
+            for token in doc:
+                if token.dep_ in ["dobj","pobj"]:
+                    objs.add((token,idx))
+
+        # get any objects that are connected to another object by a cc
+        objs = get_conjuncts(objs)
+
+        # filter out objects that are not tools
+        objs = {obj for obj in objs if in_tools(obj[0])}
+
+        # create dict mapping tools to instructions where they are used
+        tools_used_dict = defaultdict(set)
+        for obj in objs:
+            tools_used_dict[get_obj_text(obj[0])].add(obj[1])
+        print(objs)
+        print(tools_used_dict)
+
+
+        # sort in increasing order of length of key
+        tools_used_dict = dict(sorted(tools_used_dict.items(), key=lambda item: len(item[0].split())))
+        # merge keys that are substrings of other keys
+        tools_used_dict = merge_substring_keys(tools_used_dict)
+
+        self.tools = list(tools_used_dict.keys())
+
+        for tool in self.tools:
+            for instruction in tools_used_dict[tool]:
+                self.instructions[instruction].add_tool(tool)
+        
+        for instruction in self.instructions:
+            print(instruction.text)
+            print(instruction.tools)
+            print()
+
 
 
             

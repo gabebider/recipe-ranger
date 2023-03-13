@@ -57,13 +57,13 @@ class Runner():
         # Scrape the recipe page using recipe_scrapers
         scraper = scrape_me(link)
 
+        self.splitAndAddInstructions(scraper,nlp=nlp)
+        self.recipe.identify_tools()
+
         if re.search(r'allrecipes.com', link):
             self.recipe.getIngredientsFromUrl()
         else:
             self.recipe.parseForIngredients(scraper=scraper)
-
-        self.splitAndAddInstructions(scraper,nlp=nlp)
-        self.recipe.write_objects_to_file()
 
         # Print Ingredients
         print("\n***********************************\n")
