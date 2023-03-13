@@ -6,6 +6,7 @@ cup
 rolling pin
 wok
 spoon
+dish
 cutting board
 measuring cup
 colander
